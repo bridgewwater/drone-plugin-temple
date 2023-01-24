@@ -1,6 +1,6 @@
 # This dockerfile uses extends image https://hub.docker.com/bridgewwater/golang-project-temple-base
 # VERSION 1
-# Author: sinlov
+# Author: bridgewwater
 # dockerfile offical document https://docs.docker.com/engine/reference/builder/
 # https://hub.docker.com/_/golang
 FROM golang:1.17.13-buster as builder

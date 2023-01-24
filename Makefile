@@ -4,9 +4,10 @@
 ENV_DIST_VERSION := v0.1.2
 
 ROOT_NAME ?= drone-plugin-temple
+RUN_ARGS = -h
 
 # ignore used not matching mode
-ROOT_TEST_INVERT_MATCH ?= "vendor|go_fatal_error|robotn|shirou|go_robot"
+ROOT_TEST_INVERT_MATCH ?= "vendor|go_fatal_error|robotn|shirou|go_robot|main"
 # set ignore of test case like grep -v -E "vendor|go_fatal_error" to ignore vendor and go_fatal_error package
 ROOT_TEST_LIST := $$(go list ./... | grep -v -E $(ROOT_TEST_INVERT_MATCH))
 # test max time
@@ -134,10 +135,11 @@ buildARCH:
 
 dev: cleanBuild buildMain
 	ENV_WEB_AUTO_HOST=true \
-	${ROOT_BUILD_BIN_PATH}
+	${ROOT_BUILD_BIN_PATH} ${RUN_ARGS}
 
-run: dev
+run: cleanBuild buildMain
 	@echo "=> run start"
+	${ROOT_BUILD_BIN_PATH}
 
 test:
 	@echo "=> run test start"

@@ -34,11 +34,19 @@ jobs:
 
     - name: test coverage
       run: make actionCoverage
+      env:
+        PLUGIN_MSG_TYPE: ${{ secrets.PLUGIN_MSG_TYPE }}
+        PLUGIN_WEBHOOK: ${{ secrets.PLUGIN_WEBHOOK }}
 
     - name: test benchmark
       run: make actionTestBenchmark
+      env:
+        PLUGIN_MSG_TYPE: ${{ secrets.PLUGIN_MSG_TYPE }}
+        PLUGIN_WEBHOOK: ${{ secrets.PLUGIN_WEBHOOK }}
 
 #    - name: Codecov
-#      uses: codecov/codecov-action@v1.0.6
+#      uses: codecov/codecov-action@v3.1.1
 #      with:
 #        token: ${{secrets.CODECOV_TOKEN}}
+#        files: coverage.txt
+##        verbose: true

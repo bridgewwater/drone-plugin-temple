@@ -1,6 +1,6 @@
 # This dockerfile uses extends image https://hub.docker.com/bridgewwater/drone-plugin-temple
 # VERSION 1
-# Author: sinlov
+# Author: bridgewwater
 # dockerfile offical document https://docs.docker.com/engine/reference/builder/
 # https://hub.docker.com/_/golang
 FROM golang:1.17.13-buster as builder
@@ -10,10 +10,6 @@ WORKDIR ${GO_PATH_SOURCE_DIR}
 
 RUN mkdir -p ${GO_PATH_SOURCE_DIR}/github.com/bridgewwater/drone-plugin-temple
 COPY $PWD ${GO_PATH_SOURCE_DIR}/github.com/bridgewwater/drone-plugin-temple
-
-# proxy golang
-RUN go env -w "GOPROXY=https://goproxy.cn,direct"
-RUN go env -w "GOPRIVATE='*.gitlab.com,*.gitee.com"
 
 RUN cd ${GO_PATH_SOURCE_DIR}/github.com/bridgewwater/drone-plugin-temple && \
     go mod download -x

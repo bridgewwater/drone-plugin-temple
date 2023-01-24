@@ -76,7 +76,29 @@ dockerTestBuildLatest:
 dockerTestRunLatest:
 	docker image inspect --format='{{ .Created}}' ${INFO_BUILD_DOCKER_SOURCE_IMAGE}:${INFO_BUILD_DOCKER_TAG}
 	-docker run --rm --name ${INFO_TEST_TAG_BUILD_CONTAINER_NAME} \
-	-e RUN_MODE=dev \
+	-e PLUGIN_MSG_TYPE=post \
+	-e PLUGIN_WEBHOOK="7138d7b3-abc" \
+	-e DRONE_REPO=bridgewwater/drone-plugin-temple \
+	-e DRONE_REPO_NAME=drone-plugin-temple \
+	-e DRONE_REPO_NAMESPACE=bridgewwater \
+	-e DRONE_REMOTE_URL=https://github.com/bridgewwater/drone-plugin-temple \
+	-e DRONE_REPO_OWNER=bridgewwater \
+	-e DRONE_COMMIT_AUTHOR=sinlov \
+	-e DRONE_COMMIT_AUTHOR_AVATAR=  \
+	-e DRONE_COMMIT_AUTHOR_EMAIL=sinlovgmppt@gmail.com \
+	-e DRONE_COMMIT_BRANCH=main \
+	-e DRONE_COMMIT_LINK=https://github.com/bridgewwater/drone-plugin-temple/commit/68e3d62dd69f06077a243a1db1460109377add64 \
+	-e DRONE_COMMIT_SHA=68e3d62dd69f06077a243a1db1460109377add64 \
+	-e DRONE_COMMIT_REF=refs/heads/main \
+	-e DRONE_COMMIT_MESSAGE="mock message commit" \
+	-e DRONE_STAGE_STARTED=1674531206 \
+	-e DRONE_STAGE_FINISHED=1674532106 \
+	-e DRONE_BUILD_STATUS=success \
+	-e DRONE_BUILD_NUMBER=1 \
+	-e DRONE_BUILD_LINK=https://drone.xxx.com/bridgewwater/drone-plugin-temple/1 \
+	-e DRONE_BUILD_EVENT=push \
+	-e DRONE_BUILD_STARTED=1674531206 \
+	-e DRONE_BUILD_FINISHED=1674532206 \
 	${INFO_BUILD_DOCKER_SOURCE_IMAGE}:${INFO_BUILD_DOCKER_TAG}
 	# for inner check can use like this
 	# docker run -it -d --entrypoint /bin/sh --name ${INFO_TEST_TAG_BUILD_CONTAINER_NAME} ${INFO_TEST_TAG_BUILD_IMAGE_NAME}:${INFO_BUILD_DOCKER_TAG}
