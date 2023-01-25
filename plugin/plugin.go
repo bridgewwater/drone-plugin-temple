@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/bridgewwater/drone-plugin-temple/drone_info"
+	"github.com/bridgewwater/drone-plugin-temple/tools"
 	"log"
 	"os"
 )
@@ -35,7 +36,7 @@ func (p *Plugin) Exec() error {
 		return errors.New(msg)
 	}
 
-	if !(StrInArr(p.Config.MsgType, supportMsgType)) {
+	if !(tools.StrInArr(p.Config.MsgType, supportMsgType)) {
 		return fmt.Errorf("msg type only support %v", supportMsgType)
 	}
 
