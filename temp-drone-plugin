@@ -243,7 +243,7 @@ git clone --depth 1 ${temple_url} -b ${temple_branch} ${new_project}
 rm -rf ${new_project}/.git/
 sleep 1
 
-removeFileExist ${new_project}/temp-drone-plugin
+removeFileExist ${new_project}/${shell_run_name}
 removeFileExist ${new_project}/go.sum
 removeFileExist ${new_project}/CHANGELOG.md
 # replace code text at file
@@ -264,6 +264,7 @@ replaceFileByRegular ${new_project}/MakeGoDist.mk ${temple_name} ${new_project}
 replaceFileByRegular ${new_project}/MakeDocker.mk ${temple_group} ${new_repo_group}
 replaceFileByRegular ${new_project}/package.json ${temple_group}\/${temple_name} ${new_repo_group}\/${new_project}
 replaceFileByRegular ${new_project}/package.json ${temple_name} ${new_project}
+# replace code at folder
 findFileReplaceByRegular ${new_project} "*.go" ${temple_repo_host}\/${temple_group}\/${temple_name} ${new_repo_host}\/${new_repo_group}\/${new_project}
 findFileReplaceByRegular ${new_project} "*.go" ${temple_group} ${new_repo_group}
 findFileReplaceByRegular ${new_project} "*.go" ${temple_name} ${new_project}
@@ -350,9 +351,6 @@ case ${read_want_remove_action_ci} in
   echo " now keep action CI"
   ;;
 esac
-
-# remove shell util
-rm ./${new_project}/temp-drone-plugin
 
 cd ..
 new_project="$(pwd)/${new_project}"
