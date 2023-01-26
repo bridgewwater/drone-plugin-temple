@@ -156,9 +156,9 @@ $ docker run --rm bridgewwater/drone-plugin-temple:latest -h
 ### cli tools to init project fast
 
 ```
-$ curl -L --fail https://raw.githubusercontent.com/bridgewwater/drone-plugin-temple/main/temp-golang-base
-# let temp-golang-base file folder under $PATH
-$ chmod +x temp-golang-base
+$ curl -L --fail https://raw.githubusercontent.com/bridgewwater/drone-plugin-temple/main/drone-plugin-temple
+# let drone-plugin-temple file folder under $PATH
+$ chmod +x drone-plugin-temple
 # see how to use
 $ drone-plugin-temple -h
 ```
