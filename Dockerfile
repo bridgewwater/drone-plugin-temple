@@ -21,7 +21,7 @@ RUN  cd ${GO_PATH_SOURCE_DIR}/github.com/bridgewwater/drone-plugin-temple && \
   -installsuffix cgo \
   -ldflags '-w -s --extldflags "-static -fpic"' \
   -tags netgo \
-  -o golang-project-temple-base \
+  -o drone-plugin-temple \
   main.go
 
 # https://hub.docker.com/_/alpine
@@ -36,6 +36,6 @@ ARG DOCKER_CLI_VERSION=${DOCKER_CLI_VERSION}
 RUN mkdir /app
 WORKDIR /app
 
-COPY --from=builder /go/src/github.com/bridgewwater/drone-plugin-temple/golang-project-temple-base .
-ENTRYPOINT ["/app/golang-project-temple-base"]
-# CMD ["/app/golang-project-temple-base", "--help"]
+COPY --from=builder /go/src/github.com/bridgewwater/drone-plugin-temple/drone-plugin-temple .
+ENTRYPOINT ["/app/drone-plugin-temple"]
+# CMD ["/app/drone-plugin-temple", "--help"]

@@ -11,7 +11,7 @@
 
 SERVER_TEST_SSH_ALIAS = aliyun-ecs
 SERVER_TEST_FOLDER = /home/work/Document/
-SERVER_REPO_SSH_ALIAS = golang-project-temple-base
+SERVER_REPO_SSH_ALIAS = drone-plugin-temple
 SERVER_REPO_FOLDER = /home/ubuntu/$(ROOT_NAME)
 
 INFO_DIST_BUILD_ENTRANCE=${ROOT_BUILD_ENTRANCE}
