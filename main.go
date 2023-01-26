@@ -70,10 +70,16 @@ func main() {
 			Usage:   "debug mode",
 			EnvVars: []string{"PLUGIN_DEBUG"},
 		},
-		&cli.IntFlag{
+		&cli.UintFlag{
 			Name:    "config.timeout_second,timeout_second",
 			Usage:   "do request timeout setting second",
 			EnvVars: []string{"PLUGIN_TIMEOUT_SECOND"},
+		},
+		// new flag string template if no use, please
+		&cli.StringFlag{
+			Name:    "config.new_arg,new_arg",
+			Usage:   "",
+			EnvVars: []string{"PLUGIN_new_arg"},
 		},
 		&cli.StringFlag{
 			Name:    "config.webhook,webhook",
