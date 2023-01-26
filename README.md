@@ -1,4 +1,5 @@
 [![go-ubuntu](https://github.com/bridgewwater/drone-plugin-temple/workflows/go-ubuntu/badge.svg?branch=main)](https://github.com/bridgewwater/drone-plugin-temple/actions)
+[![TravisBuildStatus](https://api.travis-ci.com/bridgewwater/drone-plugin-temple.svg?branch=main)](https://travis-ci.com/bridgewwater/drone-plugin-temple)
 [![GoDoc](https://godoc.org/github.com/bridgewwater/drone-plugin-temple?status.png)](https://godoc.org/github.com/bridgewwater/drone-plugin-temple/)
 [![GoReportCard](https://goreportcard.com/badge/github.com/bridgewwater/drone-plugin-temple)](https://goreportcard.com/report/github.com/bridgewwater/drone-plugin-temple)
 [![codecov](https://codecov.io/gh/bridgewwater/drone-plugin-temple/branch/main/graph/badge.svg)](https://codecov.io/gh/bridgewwater/drone-plugin-temple)
@@ -13,7 +14,7 @@
 
 ```yaml
 steps:
-  - name: notification
+  - name: drone-plugin-template
     image: bridgewwater/drone-plugin-temple:latest
     pull: if-not-exists
     settings:
@@ -145,4 +146,19 @@ $ make dockerTestPruneLatest
 
 # see how to use
 $ docker run --rm bridgewwater/drone-plugin-temple:latest -h
+```
+
+## use
+
+- use to replace
+  `bridgewwater/drone-plugin-temple` to you code
+
+### cli tools to init project fast
+
+```
+$ curl -L --fail https://raw.githubusercontent.com/bridgewwater/drone-plugin-temple/main/temp-golang-base
+# let temp-golang-base file folder under $PATH
+$ chmod +x temp-golang-base
+# see how to use
+$ drone-plugin-temple -h
 ```
