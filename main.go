@@ -28,11 +28,13 @@ func action(c *cli.Context) error {
 	}
 
 	config := plugin.Config{
-		Debug:         c.Bool("config.debug"),
-		TimeoutSecond: c.Int("config.timeout_second"),
-		Webhook:       c.String("config.webhook"),
-		Secret:        c.String("config.secret"),
-		MsgType:       c.String("config.msg_type"),
+		Webhook: c.String("config.webhook"),
+		Secret:  c.String("config.secret"),
+		MsgType: c.String("config.msg_type"),
+
+		Debug: c.Bool("config.debug"),
+
+		TimeoutSecond: c.Uint("config.timeout_second"),
 	}
 
 	if isDebug {
