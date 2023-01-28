@@ -1,7 +1,8 @@
-package plugin
+package plugin_test
 
 import (
 	"github.com/bridgewwater/drone-plugin-temple/drone_info"
+	"github.com/bridgewwater/drone-plugin-temple/plugin"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -10,7 +11,7 @@ import (
 func TestPlugin(t *testing.T) {
 	// mock Plugin
 	t.Logf("~> mock Plugin")
-	p := Plugin{}
+	p := plugin.Plugin{}
 	// do Plugin
 	t.Logf("~> do Plugin")
 	err := p.Exec()
@@ -18,7 +19,11 @@ func TestPlugin(t *testing.T) {
 		t.Error("webhook empty error should be catch!")
 	}
 
-	envWebHook := os.Getenv("PLUGIN_WEBHOOK")
+	if envCheck(t) {
+		return
+	}
+
+	envWebHook := envPluginWebhook
 	if envWebHook == "" {
 		t.Error("please set env:PLUGIN_WEBHOOK")
 	}
