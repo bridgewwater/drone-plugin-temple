@@ -15,6 +15,8 @@ import (
 // Version of cli
 var Version = "v0.1.2"
 
+// action
+// do cli Action before flag.
 func action(c *cli.Context) error {
 
 	isDebug := c.Bool("config.debug")
@@ -33,8 +35,12 @@ func action(c *cli.Context) error {
 		MsgType:       c.String("config.msg_type"),
 	}
 
+	if isDebug {
+		log.Printf("config.timeout_second: %v", config.TimeoutSecond)
+	}
+
 	p := plugin.Plugin{
-		Drone:  *drone,
+		Drone:  drone,
 		Config: config,
 	}
 	err := p.Exec()
@@ -47,51 +53,58 @@ func action(c *cli.Context) error {
 	return nil
 }
 
-func main() {
-	app := cli.NewApp()
-	app.Version = Version
-	app.Name = "Drone Plugin"
-	app.Usage = ""
-	year := time.Now().Year()
-	app.Copyright = fmt.Sprintf("© 2022-%d sinlov", year)
-	author := &cli.Author{
-		Name:  "sinlov",
-		Email: "sinlovgmppt@gmail.com",
-	}
-	app.Authors = []*cli.Author{
-		author,
-	}
-
-	app.Action = action
-	app.Flags = []cli.Flag{
+// pluginFlag
+// set plugin flag at here
+func pluginFlag() []cli.Flag {
+	return []cli.Flag{
 		// plugin start
-		&cli.BoolFlag{
-			Name:    "config.debug,debug",
-			Usage:   "debug mode",
-			EnvVars: []string{"PLUGIN_DEBUG"},
-		},
-		&cli.UintFlag{
-			Name:    "config.timeout_second,timeout_second",
-			Usage:   "do request timeout setting second",
-			EnvVars: []string{"PLUGIN_TIMEOUT_SECOND"},
-		},
-		// new flag string template if no use, please
+		// new flag string template if no use, please replace this
 		&cli.StringFlag{
 			Name:    "config.new_arg,new_arg",
 			Usage:   "",
 			EnvVars: []string{"PLUGIN_new_arg"},
 		},
 		&cli.StringFlag{
-			Name:    "config.webhook,webhook",
-			Usage:   "webhook for send apo",
-			EnvVars: []string{"PLUGIN_WEBHOOK"},
+			Name:       "config.webhook,webhook",
+			Usage:      "webhook for send api",
+			HasBeenSet: false,
+			EnvVars:    []string{"PLUGIN_WEBHOOK"},
 		},
 		&cli.StringFlag{
 			Name:    "config.msg_type,msg_type",
 			Usage:   "message type",
+			Value:   "text",
 			EnvVars: []string{"PLUGIN_MSG_TYPE"},
 		},
+
+		&cli.BoolFlag{
+			Name:    "config.debug,debug",
+			Usage:   "debug mode",
+			Value:   false,
+			EnvVars: []string{"PLUGIN_DEBUG"},
+		},
 		// plugin end
+	}
+}
+
+// pluginHideFlag
+// set plugin hide flag at here
+func pluginHideFlag() []cli.Flag {
+	return []cli.Flag{
+		&cli.UintFlag{
+			Name:    "config.timeout_second,timeout_second",
+			Usage:   "do request timeout setting second.",
+			Hidden:  true,
+			Value:   10,
+			EnvVars: []string{"PLUGIN_TIMEOUT_SECOND"},
+		},
+	}
+}
+
+// droneInfoFlag
+// Please do not edit unless you understand drone's environment variables.
+func droneInfoFlag() []cli.Flag {
+	return []cli.Flag{
 		// droneInfo start
 		&cli.StringFlag{
 			Name:    "commit.author.username",
@@ -222,22 +235,11 @@ func main() {
 		},
 		// droneInfo end
 	}
-
-	// kubernetes runner patch
-	if _, err := os.Stat("/run/drone/env"); err == nil {
-		errDotEnv := godotenv.Overload("/run/drone/env")
-		if errDotEnv != nil {
-			log.Fatalf("load /run/drone/env err: %v", errDotEnv)
-		}
-	}
-
-	// app run as urfave
-	if err := app.Run(os.Args); nil != err {
-		log.Println(err)
-	}
 }
 
-func bindDroneInfo(c *cli.Context) *drone_info.Drone {
+// bindDroneInfo
+// Please do not edit unless you understand drone's environment variables.
+func bindDroneInfo(c *cli.Context) drone_info.Drone {
 	var drone = drone_info.Drone{
 		//  repo info
 		Repo: drone_info.Repo{
@@ -276,5 +278,49 @@ func bindDroneInfo(c *cli.Context) *drone_info.Drone {
 			FinishedAt: c.Uint64("stage.finished"),
 		},
 	}
-	return &drone
+	return drone
+}
+
+func main() {
+	app := cli.NewApp()
+	app.Version = Version
+	app.Name = "Drone Plugin"
+	app.Usage = ""
+	year := time.Now().Year()
+	app.Copyright = fmt.Sprintf("© 2022-%d sinlov", year)
+	author := &cli.Author{
+		Name:  "sinlov",
+		Email: "sinlovgmppt@gmail.com",
+	}
+	app.Authors = []*cli.Author{
+		author,
+	}
+
+	app.Action = action
+	flags := appendCliFlag(droneInfoFlag(), pluginFlag())
+	flags = appendCliFlag(flags, pluginHideFlag())
+	app.Flags = flags
+
+	// kubernetes runner patch
+	if _, err := os.Stat("/run/drone/env"); err == nil {
+		errDotEnv := godotenv.Overload("/run/drone/env")
+		if errDotEnv != nil {
+			log.Fatalf("load /run/drone/env err: %v", errDotEnv)
+		}
+	}
+
+	// app run as urfave
+	if err := app.Run(os.Args); nil != err {
+		log.Println(err)
+	}
+}
+
+// appendCliFlag
+// append cli.Flag
+func appendCliFlag(target []cli.Flag, elem []cli.Flag) []cli.Flag {
+	if len(elem) == 0 {
+		return target
+	}
+
+	return append(target, elem...)
 }
