@@ -262,4 +262,11 @@ func randomStr(cnt uint) string {
 	return string(result)
 }
 
+// randomInt
+// new random int by max
+func randomInt(max int) int {
+	rand.Seed(time.Now().Unix())
+	return rand.Intn(max)
+}
+
 // test case file tools end
