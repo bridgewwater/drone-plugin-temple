@@ -61,9 +61,9 @@ $ git config --global url."ssh://github.com/".insteadOf "https://github.com/"
 $ git ls-remote -q https://github.com/bridgewwater/drone-plugin-temple.git
 
 # test depends see full version
-$ go list -v -m -versions github.com/bridgewwater/drone-plugin-temple
+$ go list -mod=readonly -v -m -versions github.com/bridgewwater/drone-plugin-temple
 # or use last version add go.mod by script
-$ echo "go mod edit -require=$(go list -m -versions github.com/bridgewwater/drone-plugin-temple | awk '{print $1 "@" $NF}')"
+$ echo "go mod edit -require=$(go list -mod=readonly -m -versions github.com/bridgewwater/drone-plugin-temple | awk '{print $1 "@" $NF}')"
 $ echo "go mod vendor"
 ```
 
