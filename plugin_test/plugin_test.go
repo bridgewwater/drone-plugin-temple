@@ -14,21 +14,19 @@ func TestPlugin(t *testing.T) {
 	p := plugin.Plugin{}
 	// do Plugin
 	t.Logf("~> do Plugin")
+	if envCheck(t) {
+		return
+	}
+
+	// use env:ENV_DEBUG
+	p.Config.Debug = envDebug
+
 	err := p.Exec()
 	if nil == err {
 		t.Error("webhook empty error should be catch!")
 	}
 
-	if envCheck(t) {
-		return
-	}
-
-	envWebHook := envPluginWebhook
-	if envWebHook == "" {
-		t.Error("please set env:PLUGIN_WEBHOOK")
-	}
-
-	p.Config.Webhook = envWebHook
+	p.Config.Webhook = envPluginWebhook
 
 	err = p.Exec()
 	if nil == err {
@@ -44,7 +42,7 @@ func TestPlugin(t *testing.T) {
 	envMsgType := os.Getenv("PLUGIN_MSG_TYPE")
 
 	if envMsgType == "" {
-		t.Error("please set env:PLUGIN_MSG_TYPE")
+		t.Error("please set env:PLUGIN_MSG_TYPE then test")
 	}
 
 	p.Config.MsgType = envMsgType
