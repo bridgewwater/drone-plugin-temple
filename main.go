@@ -13,8 +13,10 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-// Version of cli
-var Version = "v0.1.2"
+const (
+	// Version of cli
+	Version = "v0.1.2"
+)
 
 // action
 // do cli Action before flag.
@@ -25,6 +27,7 @@ func action(c *cli.Context) error {
 	drone := bindDroneInfo(c)
 
 	if isDebug {
+		log.Printf("cli version is %s", Version)
 		log.Printf("load droneInfo finish at link: %v\n", drone.Build.Link)
 	}
 
