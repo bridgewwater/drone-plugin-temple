@@ -12,8 +12,9 @@ import (
 type (
 	// Plugin plugin all config
 	Plugin struct {
-		Drone  drone_info.Drone
-		Config Config
+		Version string
+		Drone   drone_info.Drone
+		Config  Config
 	}
 )
 

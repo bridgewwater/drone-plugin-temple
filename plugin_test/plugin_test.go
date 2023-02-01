@@ -11,7 +11,9 @@ import (
 func TestPlugin(t *testing.T) {
 	// mock Plugin
 	t.Logf("~> mock Plugin")
-	p := plugin.Plugin{}
+	p := plugin.Plugin{
+		Version: mockVersion,
+	}
 	// do Plugin
 	t.Logf("~> do Plugin")
 	if envCheck(t) {
