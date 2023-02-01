@@ -49,5 +49,7 @@ func (p *Plugin) Exec() error {
 	log.Printf("dev use Webhook: %v\n", p.Config.Webhook)
 	log.Printf("dev use MsgType: %v\n", p.Config.MsgType)
 
+	log.Printf("drone-plugin-temple version %s", p.Version)
+
 	return err
 }
