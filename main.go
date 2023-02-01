@@ -27,8 +27,8 @@ func action(c *cli.Context) error {
 	drone := bindDroneInfo(c)
 
 	if isDebug {
-		log.Printf("cli version is %s", Version)
-		log.Printf("load droneInfo finish at link: %v\n", drone.Build.Link)
+		log.Printf("debug: cli version is %s", Version)
+		log.Printf("debug: load droneInfo finish at link: %v\n", drone.Build.Link)
 	}
 
 	config := plugin.Config{
