@@ -1,6 +1,8 @@
 package plugin
 
 const (
+	EnvPluginResultShareHost = "PLUGIN_RESULT_SHARE_HOST"
+
 	msgTypeText        = "text"
 	msgTypePost        = "post"
 	msgTypeInteractive = "interactive"
@@ -12,6 +14,10 @@ var (
 		msgTypeText,
 		msgTypePost,
 		msgTypeInteractive,
+	}
+
+	cleanResultEnvList = []string{
+		EnvPluginResultShareHost,
 	}
 )
 

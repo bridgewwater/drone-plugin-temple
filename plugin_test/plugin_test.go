@@ -12,6 +12,7 @@ func TestPlugin(t *testing.T) {
 	// mock Plugin
 	t.Logf("~> mock Plugin")
 	p := plugin.Plugin{
+		Name:    mockName,
 		Version: mockVersion,
 	}
 	// do Plugin
@@ -53,4 +54,10 @@ func TestPlugin(t *testing.T) {
 	// verify Plugin
 
 	assert.Equal(t, "bridgewwater", p.Drone.Repo.OwnerName)
+
+	err = p.CleanResultEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	assert.Equal(t, "", os.Getenv(plugin.EnvPluginResultShareHost))
 }

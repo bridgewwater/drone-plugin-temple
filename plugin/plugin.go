@@ -12,11 +12,22 @@ import (
 type (
 	// Plugin plugin all config
 	Plugin struct {
+		Name    string
 		Version string
 		Drone   drone_info.Drone
 		Config  Config
 	}
 )
+
+func (p *Plugin) CleanResultEnv() error {
+	for _, envItem := range cleanResultEnvList {
+		err := os.Unsetenv(envItem)
+		if err != nil {
+			return fmt.Errorf("at FileBrowserPlugin.CleanResultEnv [ %s ], err: %v", envItem, err)
+		}
+	}
+	return nil
+}
 
 func (p *Plugin) Exec() error {
 	if p.Config.Debug {
@@ -49,7 +60,7 @@ func (p *Plugin) Exec() error {
 	log.Printf("dev use Webhook: %v\n", p.Config.Webhook)
 	log.Printf("dev use MsgType: %v\n", p.Config.MsgType)
 
-	log.Printf("drone-plugin-temple version %s", p.Version)
+	log.Printf("=> plugin %s version %s", p.Name, p.Version)
 
 	return err
 }

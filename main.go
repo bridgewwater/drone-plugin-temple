@@ -18,6 +18,7 @@ import (
 const (
 	// Version of cli
 	Version = "v0.1.2"
+	Name    = "drone-plugin-temple"
 )
 
 // action
@@ -48,6 +49,7 @@ func action(c *cli.Context) error {
 	}
 
 	p := plugin.Plugin{
+		Name:    Version,
 		Version: Version,
 		Drone:   drone,
 		Config:  config,
