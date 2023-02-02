@@ -2,13 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/bridgewwater/drone-plugin-temple/plugin"
+	"github.com/sinlov/drone-info-tools/drone_info"
 	"log"
 	"net/url"
 	"os"
 	"time"
 
-	"github.com/bridgewwater/drone-plugin-temple/drone_info"
+	"github.com/bridgewwater/drone-plugin-temple/plugin"
+	"github.com/sinlov/drone-info-tools/drone_urfave_cli_v2"
+
 	"github.com/joho/godotenv"
 	"github.com/urfave/cli/v2"
 )
@@ -24,7 +26,7 @@ func action(c *cli.Context) error {
 
 	isDebug := c.Bool("config.debug")
 
-	drone := bindDroneInfo(c)
+	drone := drone_urfave_cli_v2.UrfaveCliBindDroneInfo(c)
 
 	if isDebug {
 		log.Printf("debug: cli version is %s", Version)
@@ -105,239 +107,6 @@ func pluginHideFlag() []cli.Flag {
 			Value:   10,
 			EnvVars: []string{"PLUGIN_TIMEOUT_SECOND"},
 		},
-	}
-}
-
-// droneInfoFlag
-// Please do not edit unless you understand drone's environment variables.
-func droneInfoFlag() []cli.Flag {
-	return []cli.Flag{
-		// droneInfo start
-		&cli.StringFlag{
-			Name:    "repo.name",
-			Usage:   "providers the name of the repository",
-			EnvVars: []string{drone_info.EnvDroneRepoName},
-		},
-		&cli.StringFlag{
-			Name:    "repo.group",
-			Usage:   "providers the group of the repository",
-			EnvVars: []string{drone_info.EnvDroneRepoNamespace},
-		},
-		&cli.StringFlag{
-			Name:    "repo.full.name",
-			Usage:   "providers the full name of the repository",
-			EnvVars: []string{drone_info.EnvDroneRepo},
-		},
-		&cli.StringFlag{
-			Name:    "repo.owner",
-			Usage:   "providers the owner of the repository",
-			EnvVars: []string{drone_info.EnvDroneRepoOwner},
-		},
-		&cli.StringFlag{
-			Name:    "repo.scm",
-			Usage:   "Provides the repository type for the current running build",
-			EnvVars: []string{drone_info.EnvDroneRepoScm},
-		},
-		&cli.StringFlag{
-			Name:    "repo.remote.url",
-			Usage:   "Provides the git+ssh url that should be used to clone the repository.",
-			EnvVars: []string{drone_info.EnvDroneRemoteUrl},
-		},
-		&cli.StringFlag{
-			Name:    "repo.http.url",
-			Usage:   "Provides the http url that should be used to clone the repository",
-			EnvVars: []string{drone_info.EnvDroneGitHttpUrl},
-		},
-		&cli.StringFlag{
-			Name:    "repo.ssh.url",
-			Usage:   "Provides the ssh url that should be used to clone the repository",
-			EnvVars: []string{drone_info.EnvDroneGitSshUrl},
-		},
-
-		// drone_info.Build
-		&cli.StringFlag{
-			Name:    "build.workspace",
-			Usage:   "drone’s working directory for a pipeline",
-			EnvVars: []string{drone_info.EnvDroneBuildWorkSpace},
-		},
-		&cli.StringFlag{
-			Name:    "build.status",
-			Usage:   "build status",
-			Value:   "success",
-			EnvVars: []string{drone_info.EnvDroneBuildStatus},
-		},
-		&cli.Uint64Flag{
-			Name:    "build.number",
-			Usage:   "providers the current build number",
-			EnvVars: []string{drone_info.EnvDroneBuildNumber},
-		},
-		&cli.StringFlag{
-			Name:    "build.tag",
-			Usage:   "build tag",
-			EnvVars: []string{drone_info.EnvDroneTag},
-		},
-		&cli.StringFlag{
-			Name:    "build.target_branch",
-			Usage:   "This environment variable can be used in conjunction with the source branch variable to get the pull request base and head branch.",
-			EnvVars: []string{drone_info.EnvDroneTargetBranch},
-		},
-		&cli.StringFlag{
-			Name:    "build.link",
-			Usage:   "build link",
-			EnvVars: []string{drone_info.EnvDroneBuildLink},
-		},
-		&cli.StringFlag{
-			Name:    "build.event",
-			Usage:   "build event",
-			EnvVars: []string{drone_info.EnvDroneBuildEvent},
-		},
-		&cli.Uint64Flag{
-			Name:    "build.started",
-			Usage:   "build started",
-			EnvVars: []string{drone_info.EnvDroneBuildStarted},
-		},
-		&cli.Uint64Flag{
-			Name:    "build.finished",
-			Usage:   "build finished",
-			EnvVars: []string{drone_info.EnvDroneBuildFinished},
-		},
-		&cli.StringFlag{
-			Name:    "pull.request",
-			Usage:   "pull request",
-			EnvVars: []string{drone_info.EnvDronePR},
-		},
-		&cli.StringFlag{
-			Name:    "deploy.to",
-			Usage:   "provides the target deployment environment for the running build. This value is only available to promotion and rollback pipelines.",
-			EnvVars: []string{drone_info.EnvDroneDeployTo},
-		},
-		&cli.StringFlag{
-			Name:    "failed.stages",
-			Usage:   "Provides a comma-separate list of failed pipeline stages for the current running build.",
-			EnvVars: []string{drone_info.EnvDroneFailedStages},
-		},
-		&cli.StringFlag{
-			Name:    "failed.steps",
-			Usage:   "Provides a comma-separate list of failed pipeline steps",
-			EnvVars: []string{drone_info.EnvDroneFailedSteps},
-		},
-
-		&cli.StringFlag{
-			Name:    "commit.author.username",
-			Usage:   "Provides the commit author name for the current running build. Note this is a user-defined value and may be empty or inaccurate",
-			EnvVars: []string{drone_info.EnvDroneCommitAuthorName},
-		},
-		&cli.StringFlag{
-			Name:    "commit.author.email",
-			Usage:   "Provides the commit email address for the current running build. Note this is a user-defined value and may be empty or inaccurate",
-			EnvVars: []string{drone_info.EnvDroneCommitAuthorEmail},
-		},
-		&cli.StringFlag{
-			Name:    "commit.author.name",
-			Usage:   "Provides the commit author username for the current running build. This is the username from source control management system (e.g. GitHub username)",
-			EnvVars: []string{drone_info.EnvDroneCommitAuthor},
-		},
-		&cli.StringFlag{
-			Name:    "commit.author.avatar",
-			Usage:   "Provides the commit author avatar for the current running build. This is the avatar from source control management system (e.g. GitHub)",
-			EnvVars: []string{drone_info.EnvDroneCommitAuthorAvatar},
-		},
-		&cli.StringFlag{
-			Name:    "commit.link",
-			Usage:   "providers the http link to the current commit in the remote source code management system(e.g.GitHub)",
-			EnvVars: []string{drone_info.EnvDroneCommitLink},
-		},
-		&cli.StringFlag{
-			Name:    "commit.branch",
-			Usage:   "providers the branch for the current build",
-			EnvVars: []string{drone_info.EnvDroneCommitBranch},
-			Value:   "master",
-		},
-		&cli.StringFlag{
-			Name:    "commit.message",
-			Usage:   "providers the commit message for the current build",
-			EnvVars: []string{drone_info.EnvDroneCommitMessage},
-		},
-		&cli.StringFlag{
-			Name:    "commit.sha",
-			Usage:   "providers the commit sha for the current build",
-			EnvVars: []string{drone_info.EnvDroneCommitSha},
-		},
-		&cli.StringFlag{
-			Name:    "commit.ref",
-			Usage:   "providers the commit ref for the current build",
-			EnvVars: []string{drone_info.EnvDroneCommitRef},
-		},
-
-		// drone_info.Stage
-		&cli.Uint64Flag{
-			Name:    "stage.started",
-			Usage:   "stage started ",
-			EnvVars: []string{drone_info.EnvDroneStageStarted},
-		},
-		&cli.Uint64Flag{
-			Name:    "stage.finished",
-			Usage:   "stage finished",
-			EnvVars: []string{drone_info.EnvDroneStageFinished},
-		},
-		&cli.StringFlag{
-			Name:    "stage.machine",
-			Usage:   "stage machine",
-			EnvVars: []string{drone_info.EnvDroneStageMachine},
-		},
-		&cli.StringFlag{
-			Name:    "stage.os",
-			Usage:   "stage OS",
-			EnvVars: []string{drone_info.EnvDroneStageOs},
-		},
-		&cli.StringFlag{
-			Name:    "stage.arch",
-			Usage:   "stage arch",
-			EnvVars: []string{drone_info.EnvDroneStageArch},
-		},
-		&cli.StringFlag{
-			Name:    "stage.variant",
-			Usage:   "stage variant",
-			EnvVars: []string{drone_info.EnvDroneStageVariant},
-		},
-		&cli.StringFlag{
-			Name:    "stage.type",
-			Usage:   "stage type",
-			EnvVars: []string{drone_info.EnvDroneStageType},
-		},
-		&cli.StringFlag{
-			Name:    "stage.kind",
-			Usage:   "stage kind",
-			EnvVars: []string{drone_info.EnvDroneStageKind},
-		},
-		&cli.StringFlag{
-			Name:    "stage.name",
-			Usage:   "stage name",
-			EnvVars: []string{drone_info.EnvDroneStageName},
-		},
-
-		// drone_info.DroneSystem
-		&cli.StringFlag{
-			Name:    "drone.system.version",
-			Usage:   "Provides the version of the Drone server.",
-			EnvVars: []string{drone_info.EnvDroneSystemVersion},
-		},
-		&cli.StringFlag{
-			Name:    "drone.system.host",
-			Usage:   "Provides the host used by the Drone server. This can be combined with the protocol to construct to the server url.",
-			EnvVars: []string{drone_info.EnvDroneSystemHost},
-		},
-		&cli.StringFlag{
-			Name:    "drone.system.hostname",
-			Usage:   "Provides the hostname used by the Drone server. This can be combined with the protocol to construct to the server url.",
-			EnvVars: []string{drone_info.EnvDroneSystemHostName},
-		},
-		&cli.StringFlag{
-			Name:    "drone.system.proto",
-			Usage:   "Provides the protocol used by the Drone server. This can be combined with the hostname to construct to the server url.",
-			EnvVars: []string{drone_info.EnvDroneSystemProto},
-		},
-		// droneInfo end
 	}
 }
 
@@ -438,8 +207,8 @@ func main() {
 	}
 
 	app.Action = action
-	flags := appendCliFlag(droneInfoFlag(), pluginFlag())
-	flags = appendCliFlag(flags, pluginHideFlag())
+	flags := drone_urfave_cli_v2.UrfaveCliAppendCliFlag(drone_urfave_cli_v2.DroneInfoUrfaveCliFlag(), pluginFlag())
+	flags = drone_urfave_cli_v2.UrfaveCliAppendCliFlag(flags, pluginHideFlag())
 	app.Flags = flags
 
 	// kubernetes runner patch
@@ -454,14 +223,4 @@ func main() {
 	if err := app.Run(os.Args); nil != err {
 		log.Println(err)
 	}
-}
-
-// appendCliFlag
-// append cli.Flag
-func appendCliFlag(target []cli.Flag, elem []cli.Flag) []cli.Flag {
-	if len(elem) == 0 {
-		return target
-	}
-
-	return append(target, elem...)
 }

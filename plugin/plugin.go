@@ -3,8 +3,8 @@ package plugin
 import (
 	"errors"
 	"fmt"
-	"github.com/bridgewwater/drone-plugin-temple/drone_info"
 	"github.com/bridgewwater/drone-plugin-temple/tools"
+	"github.com/sinlov/drone-info-tools/drone_info"
 	"log"
 	"os"
 )

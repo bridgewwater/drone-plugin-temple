@@ -1,8 +1,8 @@
 package plugin_test
 
 import (
-	"github.com/bridgewwater/drone-plugin-temple/drone_info"
 	"github.com/bridgewwater/drone-plugin-temple/plugin"
+	"github.com/sinlov/drone-info-tools/drone_info"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
