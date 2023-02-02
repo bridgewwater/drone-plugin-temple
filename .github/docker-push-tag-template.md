@@ -1,5 +1,6 @@
 ## need `New repository secret`
 
+- file `docker-image-tag.yml`
 - `ACCESS_TOKEN` from [hub.docker](https://hub.docker.com/settings/security)
 - `IMAGE_BUILD_OS_NAME` like `alpine` and let `Dockerfile` under this folder
 
@@ -22,9 +23,7 @@ env:
   IMAGE_NAME: drone-plugin-temple
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -78,9 +77,7 @@ env:
   IMAGE_NAME: drone-plugin-temple
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

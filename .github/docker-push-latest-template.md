@@ -1,5 +1,6 @@
 ## need `New repository secret`
 
+- file `docker-image-latest.yml`
 - `ACCESS_TOKEN` from [hub.docker](https://hub.docker.com/settings/security)
 
 ## base template
@@ -21,9 +22,7 @@ env:
   IMAGE_NAME: drone-plugin-temple
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -72,9 +71,7 @@ env:
   IMAGE_NAME: drone-plugin-temple
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -103,6 +100,5 @@ jobs:
         echo VERSION=$VERSION
         # build
         docker buildx build -t $IMAGE_ID:$VERSION --platform=linux/arm,linux/arm64,linux/amd64 . --push
-
 
 ```
