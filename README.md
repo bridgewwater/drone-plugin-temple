@@ -3,6 +3,9 @@
 [![GoDoc](https://godoc.org/github.com/bridgewwater/drone-plugin-temple?status.png)](https://godoc.org/github.com/bridgewwater/drone-plugin-temple/)
 [![GoReportCard](https://goreportcard.com/badge/github.com/bridgewwater/drone-plugin-temple)](https://goreportcard.com/report/github.com/bridgewwater/drone-plugin-temple)
 [![codecov](https://codecov.io/gh/bridgewwater/drone-plugin-temple/branch/main/graph/badge.svg)](https://codecov.io/gh/bridgewwater/drone-plugin-temple)
+![docker version semver](https://img.shields.io/docker/v/sinlov/drone-plugin-temple?sort=semver)
+[![docker image size](https://img.shields.io/docker/image-size/sinlov/drone-plugin-temple)](https://hub.docker.com/r/sinlov/drone-plugin-temple)
+[![docker pulls](https://img.shields.io/docker/pulls/sinlov/drone-plugin-temple)](https://hub.docker.com/r/sinlov/drone-plugin-temple/tags?page=1&ordering=last_updated)
 
 ## for what
 
