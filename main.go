@@ -1,7 +1,9 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
+	"github.com/bridgewwater/drone-plugin-temple/pkgJson"
 	"github.com/sinlov/drone-info-tools/template"
 	"log"
 	"os"
@@ -15,10 +17,11 @@ import (
 )
 
 const (
-	// Version of cli
-	Version = "v0.1.2"
-	Name    = "drone-plugin-temple"
+	Name = "drone-plugin-temple"
 )
+
+//go:embed package.json
+var packageJson string
 
 // action
 // do cli Action before flag.
@@ -28,8 +31,9 @@ func action(c *cli.Context) error {
 
 	drone := drone_urfave_cli_v2.UrfaveCliBindDroneInfo(c)
 
+	cliVersion := pkgJson.GetPackageJsonVersionGoStyle()
 	if isDebug {
-		log.Printf("debug: cli version is %s", Version)
+		log.Printf("debug: cli version is %s", cliVersion)
 		log.Printf("debug: load droneInfo finish at link: %v\n", drone.Build.Link)
 	}
 
@@ -48,8 +52,8 @@ func action(c *cli.Context) error {
 	}
 
 	p := plugin.Plugin{
-		Name:    Version,
-		Version: Version,
+		Name:    Name,
+		Version: cliVersion,
 		Drone:   drone,
 		Config:  config,
 	}
@@ -112,9 +116,10 @@ func pluginHideFlag() []cli.Flag {
 }
 
 func main() {
+	pkgJson.InitPkgJsonContent(packageJson)
 	template.RegisterSettings(template.DefaultFunctions)
 	app := cli.NewApp()
-	app.Version = Version
+	app.Version = pkgJson.GetPackageJsonVersionGoStyle()
 	app.Name = "Drone Plugin"
 	app.Usage = ""
 	year := time.Now().Year()
