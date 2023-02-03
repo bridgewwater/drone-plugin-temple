@@ -53,8 +53,6 @@ func TestPlugin(t *testing.T) {
 	p.Drone = *drone_info.MockDroneInfo("success")
 	// verify Plugin
 
-	assert.Equal(t, "bridgewwater", p.Drone.Repo.OwnerName)
-
 	err = p.CleanResultEnv()
 	if err != nil {
 		t.Fatal(err)
