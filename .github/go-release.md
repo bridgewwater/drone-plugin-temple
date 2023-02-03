@@ -13,8 +13,7 @@ on:
       - '*' # Push events to matching *, i.e. 1.0.0 v1.0, v20.15.10
 
 #env:
-  # name of docker image
-#  DOCKER_HUB_USER: sinlov
+#  ENV_GITHUB_TAG_FROM_REF: ${GITHUB_REF##*/}
 
 permissions:
   contents: write
