@@ -3,7 +3,7 @@ package main
 import (
 	_ "embed"
 	"fmt"
-	"github.com/bridgewwater/drone-plugin-temple/pkgJson"
+	"github.com/sinlov/drone-info-tools/pkgJson"
 	"github.com/sinlov/drone-info-tools/template"
 	"log"
 	"os"
