@@ -30,9 +30,9 @@ func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Dr
 	return p
 }
 
-// CommonFlag
-// set plugin flag at here
-func CommonFlag() []cli.Flag {
+// Flag
+// set flag at here
+func Flag() []cli.Flag {
 	return []cli.Flag{
 		// plugin start
 		// new flag string template if no use, please replace this
@@ -53,14 +53,13 @@ func CommonFlag() []cli.Flag {
 			Value:   "text",
 			EnvVars: []string{"PLUGIN_MSG_TYPE"},
 		},
-
-		&cli.BoolFlag{
-			Name:    "config.debug,debug",
-			Usage:   "debug mode",
-			Value:   false,
-			EnvVars: []string{"PLUGIN_DEBUG"},
-		},
 		// plugin end
+		//&cli.StringFlag{
+		//	Name:    "config.new_arg,new_arg",
+		//	Usage:   "",
+		//	EnvVars: []string{"PLUGIN_new_arg"},
+		//},
+		// file_browser_plugin end
 	}
 }
 
@@ -68,12 +67,32 @@ func CommonFlag() []cli.Flag {
 // set plugin hide flag at here
 func HideFlag() []cli.Flag {
 	return []cli.Flag{
+		//&cli.UintFlag{
+		//	Name:    "config.timeout_second,timeout_second",
+		//	Usage:   "do request timeout setting second.",
+		//	Hidden:  true,
+		//	Value:   10,
+		//	EnvVars: []string{"PLUGIN_TIMEOUT_SECOND"},
+		//},
+	}
+}
+
+// CommonFlag
+// Other modules also have flags
+func CommonFlag() []cli.Flag {
+	return []cli.Flag{
 		&cli.UintFlag{
 			Name:    "config.timeout_second,timeout_second",
 			Usage:   "do request timeout setting second.",
 			Hidden:  true,
 			Value:   10,
 			EnvVars: []string{"PLUGIN_TIMEOUT_SECOND"},
+		},
+		&cli.BoolFlag{
+			Name:    "config.debug,debug",
+			Usage:   "debug mode",
+			Value:   false,
+			EnvVars: []string{"PLUGIN_DEBUG"},
 		},
 	}
 }

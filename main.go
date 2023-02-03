@@ -67,6 +67,7 @@ func main() {
 
 	app.Action = action
 	flags := drone_urfave_cli_v2.UrfaveCliAppendCliFlag(drone_urfave_cli_v2.DroneInfoUrfaveCliFlag(), plugin.CommonFlag())
+	flags = drone_urfave_cli_v2.UrfaveCliAppendCliFlag(flags, plugin.Flag())
 	flags = drone_urfave_cli_v2.UrfaveCliAppendCliFlag(flags, plugin.HideFlag())
 	app.Flags = flags
 
