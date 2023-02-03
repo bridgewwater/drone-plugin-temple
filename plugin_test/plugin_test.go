@@ -26,20 +26,20 @@ func TestPlugin(t *testing.T) {
 
 	err := p.Exec()
 	if nil == err {
-		t.Error("webhook empty error should be catch!")
+		t.Fatal("args [ webhook ] empty error should be catch!")
 	}
 
 	p.Config.Webhook = envPluginWebhook
 
 	err = p.Exec()
 	if nil == err {
-		t.Error("msg type empty error should be catch!")
+		t.Fatal("args [ msg_type ] empty error should be catch!")
 	}
 
 	p.Config.MsgType = "mock" // not support type
 	err = p.Exec()
 	if nil == err {
-		t.Error("msg type not support error should be catch!")
+		t.Fatal("args [ msg_type ] not support error should be catch!")
 	}
 
 	envMsgType := os.Getenv("PLUGIN_MSG_TYPE")
