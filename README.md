@@ -11,10 +11,6 @@
 
 - this project used to drone CI
 
-## Features
-
-- more see [features/README.md](features/README.md)
-
 ## Pipeline Settings (.drone.yml)
 
 `1.x`
@@ -42,6 +38,10 @@ steps:
         - failure
         # - success
 ```
+
+# Features
+
+- more see [features/README.md](features/README.md)
 
 # dev
 
