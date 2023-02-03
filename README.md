@@ -17,7 +17,7 @@
 
 ```yaml
 steps:
-  - name: drone-plugin-template
+  - name: drone-plugin-temple
     image: bridgewwater/drone-plugin-temple:latest
     pull: if-not-exists
     settings:
