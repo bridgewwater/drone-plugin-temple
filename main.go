@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/sinlov/drone-info-tools/template"
 	"log"
 	"os"
 	"time"
@@ -111,6 +112,7 @@ func pluginHideFlag() []cli.Flag {
 }
 
 func main() {
+	template.RegisterSettings(template.DefaultFunctions)
 	app := cli.NewApp()
 	app.Version = Version
 	app.Name = "Drone Plugin"
