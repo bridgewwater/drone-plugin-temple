@@ -32,6 +32,9 @@ func (p *Plugin) CleanResultEnv() error {
 }
 
 func (p *Plugin) Exec() error {
+
+	log.Printf("=> plugin %s version %s", p.Name, p.Version)
+
 	if p.Config.Debug {
 		for _, e := range os.Environ() {
 			log.Println(e)
