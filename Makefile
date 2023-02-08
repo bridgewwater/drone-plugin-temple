@@ -6,7 +6,8 @@ ifneq ($(strip $(ENV_CI_DIST_VERSION)),)
     ENV_DIST_VERSION=${ENV_CI_DIST_VERSION}
 endif
 
-ROOT_NAME ?= drone-plugin-temple
+ROOT_NAME?=drone-plugin-temple
+ROOT_OWNER?=bridgewwater
 ENV_RUN_INFO_HELP_ARGS= -h
 ENV_RUN_INFO_ARGS=
 # change to other build entrance
