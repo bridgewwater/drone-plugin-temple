@@ -6,6 +6,7 @@
 [![docker version semver](https://img.shields.io/docker/v/bridgewwater/drone-plugin-temple?sort=semver)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple/tags?page=1&ordering=last_updated)
 [![docker image size](https://img.shields.io/docker/image-size/bridgewwater/drone-plugin-temple)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple)
 [![docker pulls](https://img.shields.io/docker/pulls/bridgewwater/drone-plugin-temple)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple/tags?page=1&ordering=last_updated)
+[![github release](https://img.shields.io/github/v/release/bridgewwater/drone-plugin-temple?style=social)](https://github.com/bridgewwater/drone-plugin-temple/releases)
 
 ## for what
 
