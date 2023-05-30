@@ -33,7 +33,7 @@ func (p *Plugin) CleanResultEnv() error {
 
 func (p *Plugin) Exec() error {
 
-	log.Printf("=> plugin %s version %s", p.Name, p.Version)
+	log.Printf("=> %s version %s start", p.Name, p.Version)
 
 	if p.Config.Debug {
 		for _, e := range os.Environ() {
@@ -65,8 +65,11 @@ func (p *Plugin) Exec() error {
 	log.Printf("dev use Webhook: %v\n", p.Config.Webhook)
 	log.Printf("dev use MsgType: %v\n", p.Config.MsgType)
 
-	log.Printf("=> plugin %s version %s", p.Name, p.Version)
+	log.Printf("=> %s version %s end", p.Name, p.Version)
 
+	if p.Config.Debug {
+		log.Printf("=> debug: %s version %s", p.Name, p.Version)
+	}
 	return err
 }
 
