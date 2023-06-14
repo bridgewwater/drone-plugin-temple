@@ -3,7 +3,6 @@ package plugin_test
 import (
 	"github.com/sinlov/drone-info-tools/drone_info"
 	"github.com/stretchr/testify/assert"
-	"os"
 	"testing"
 )
 
@@ -19,10 +18,8 @@ func TestEnvKeys(t *testing.T) {
 	envArray := fetchOsEnvArray(keyEnvs)
 	assert.Nil(t, envArray)
 
-	err := os.Setenv(keyEnvs, "foo, bar,My ")
-	if err != nil {
-		t.Error(err)
-	}
+	setEnvStr(t, keyEnvs, "foo, bar,My ")
+
 	envArray = fetchOsEnvArray(keyEnvs)
 
 	// verify EnvKeys

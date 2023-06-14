@@ -165,8 +165,8 @@ $ docker run --rm bridgewwater/drone-plugin-temple:latest -h
 
 ```
 $ curl -L --fail https://raw.githubusercontent.com/bridgewwater/drone-plugin-temple/main/drone-plugin-temple
-# let drone-plugin-temple file folder under $PATH
-$ chmod +x drone-plugin-temple
+# let temp-drone-plugin file folder under $PATH
+$ chmod +x temp-drone-plugin
 # see how to use
-$ drone-plugin-temple -h
+$ temp-drone-plugin -h
 ```

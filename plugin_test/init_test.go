@@ -56,8 +56,82 @@ func init() {
 
 // test case file tools start
 
+// goldenDataSaveFast
+// save data to golden file
+// style as: "TestFuncName-extraName.golden"
+func goldenDataSaveFast(t *testing.T, data []byte, extraName string) error {
+	return goldenDataSave(t, data, extraName, os.FileMode(0766))
+}
+
+// goldenDataSave
+// save data to golden file
+// style as: "TestFuncName-extraName.golden"
+func goldenDataSave(t *testing.T, data []byte, extraName string, fileMod fs.FileMode) error {
+	testDataFolderFullPath, err := getOrCreateTestDataFolderFullPath()
+	if err != nil {
+		return fmt.Errorf("try goldenDataSave err: %v", err)
+	}
+	savePath := filepath.Join(testDataFolderFullPath, fmt.Sprintf("%s-%s.golden", t.Name(), extraName))
+	err = writeFileByByte(savePath, data, fileMod, true)
+	if err != nil {
+		return fmt.Errorf("try goldenDataSave at path: %s err: %v", savePath, err)
+	}
+	return nil
+}
+
+// goldenDataReadAsByte
+// read golden file as byte
+// style as: "TestFuncName-extraName.golden"
+func goldenDataReadAsByte(t *testing.T, extraName string) ([]byte, error) {
+	testDataFolderFullPath, err := getOrCreateTestDataFolderFullPath()
+	if err != nil {
+		return nil, fmt.Errorf("try goldenDataReadAsByte err: %v", err)
+	}
+
+	savePath := filepath.Join(testDataFolderFullPath, fmt.Sprintf("%s-%s.golden", t.Name(), extraName))
+
+	fileAsByte, err := readFileAsByte(savePath)
+	if err != nil {
+		return nil, fmt.Errorf("try goldenDataReadAsByte err: %v", err)
+	}
+	return fileAsByte, nil
+}
+
 var currentTestDataFolderAbsPath = ""
 
+// getOrCreateTestDataFullPath
+// get or create test data full path will under this package testdata
+// this function will create dir for return full path
+func getOrCreateTestDataFullPath(elem ...string) (string, error) {
+	if elem == nil || len(elem) < 1 {
+		return "", fmt.Errorf("must has one elem")
+	}
+	dataFolderFullPath, err := getOrCreateTestDataFolderFullPath()
+	if err != nil {
+		return "", err
+	}
+	fullPath := filepath.Join(dataFolderFullPath, elem[0])
+	if len(elem) > 1 {
+		for i := 1; i < len(elem); i++ {
+			fullPath = filepath.Join(fullPath, elem[i])
+		}
+	}
+	baseDir := filepath.Dir(fullPath)
+	if !pathExistsFast(baseDir) {
+		errMkdir := mkdir(baseDir)
+		if errMkdir != nil {
+			return fullPath, errMkdir
+		}
+	}
+	if !pathIsDir(baseDir) {
+		return "", fmt.Errorf("getOrCreateTestDataFullPath exist file, and can not create dir at path: %s", baseDir)
+	}
+
+	return fullPath, nil
+}
+
+// getOrCreateTestDataFolderFullPath
+// will create testdata folder under this package
 func getOrCreateTestDataFolderFullPath() (string, error) {
 	if currentTestDataFolderAbsPath != "" {
 		return currentTestDataFolderAbsPath, nil
@@ -75,38 +149,6 @@ func getOrCreateTestDataFolderFullPath() (string, error) {
 		}
 	}
 	return currentTestDataFolderAbsPath, nil
-}
-
-func goldenDataSaveFast(t *testing.T, data []byte, extraName string) error {
-	return goldenDataSave(t, data, extraName, os.FileMode(0766))
-}
-
-func goldenDataSave(t *testing.T, data []byte, extraName string, fileMod fs.FileMode) error {
-	testDataFolderFullPath, err := getOrCreateTestDataFolderFullPath()
-	if err != nil {
-		return fmt.Errorf("try goldenDataSave err: %v", err)
-	}
-	savePath := filepath.Join(testDataFolderFullPath, fmt.Sprintf("%s-%s.golden", t.Name(), extraName))
-	err = writeFileByByte(savePath, data, fileMod, true)
-	if err != nil {
-		return fmt.Errorf("try goldenDataSave at path: %s err: %v", savePath, err)
-	}
-	return nil
-}
-
-func goldenDataReadAsByte(t *testing.T, extraName string) ([]byte, error) {
-	testDataFolderFullPath, err := getOrCreateTestDataFolderFullPath()
-	if err != nil {
-		return nil, fmt.Errorf("try goldenDataReadAsByte err: %v", err)
-	}
-
-	savePath := filepath.Join(testDataFolderFullPath, fmt.Sprintf("%s-%s.golden", t.Name(), extraName))
-
-	fileAsByte, err := readFileAsByte(savePath)
-	if err != nil {
-		return nil, fmt.Errorf("try goldenDataReadAsByte err: %v", err)
-	}
-	return fileAsByte, nil
 }
 
 // getCurrentFolderPath can get run path this golang dir
@@ -136,6 +178,15 @@ func pathExistsFast(path string) bool {
 	return exists
 }
 
+// pathIsDir path is dir
+func pathIsDir(path string) bool {
+	s, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return s.IsDir()
+}
+
 // rmDir remove dir by path
 func rmDir(path string, force bool) error {
 	if force {
@@ -160,7 +211,8 @@ func mkdir(path string) error {
 	return nil
 }
 
-// readFileAsByte read file as byte array
+// readFileAsByte
+// read file as byte array
 func readFileAsByte(path string) ([]byte, error) {
 	exists, err := pathExists(path)
 	if err != nil {
@@ -177,7 +229,8 @@ func readFileAsByte(path string) ([]byte, error) {
 	return data, nil
 }
 
-// readFileAsJson read file as json
+// readFileAsJson
+// read file as json
 func readFileAsJson(path string, v interface{}) error {
 	fileAsByte, err := readFileAsByte(path)
 	err = json.Unmarshal(fileAsByte, v)
@@ -187,7 +240,8 @@ func readFileAsJson(path string, v interface{}) error {
 	return nil
 }
 
-// writeFileByByte write bytes to file
+// writeFileByByte
+// write bytes to file
 // path most use Abs Path
 // data []byte
 // fileMod os.FileMode(0666) or os.FileMode(0644)
@@ -303,6 +357,47 @@ func fetchOsEnvArray(key string) []string {
 	}
 
 	return devValueStr
+}
+
+// setEnvStr
+// set env by key and val
+func setEnvStr(t *testing.T, key string, val string) {
+	err := os.Setenv(key, val)
+	if err != nil {
+		t.Fatalf("set env key [%v] string err: %v", key, err)
+	}
+}
+
+// setEnvBool
+// set env by key and val
+func setEnvBool(t *testing.T, key string, val bool) {
+	var err error
+	if val {
+		err = os.Setenv(key, "true")
+	} else {
+		err = os.Setenv(key, "false")
+	}
+	if err != nil {
+		t.Fatalf("set env key [%v] bool err: %v", key, err)
+	}
+}
+
+// setEnvU64
+// set env by key and val
+func setEnvU64(t *testing.T, key string, val uint64) {
+	err := os.Setenv(key, strconv.FormatUint(val, 10))
+	if err != nil {
+		t.Fatalf("set env key [%v] uint64 err: %v", key, err)
+	}
+}
+
+// setEnvInt64
+// set env by key and val
+func setEnvInt64(t *testing.T, key string, val int64) {
+	err := os.Setenv(key, strconv.FormatInt(val, 10))
+	if err != nil {
+		t.Fatalf("set env key [%v] int64 err: %v", key, err)
+	}
 }
 
 // randomStr
