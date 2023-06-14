@@ -5,12 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/sinlov/drone-info-tools/drone_info"
 	"github.com/sinlov/drone-info-tools/template"
 	"io/fs"
 	"math/rand"
 	"os"
 	"path/filepath"
 	"runtime"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 )
@@ -23,11 +26,10 @@ const (
 )
 
 var (
-	envDebug    = false
-	envUserName = ""
-	envPassword = ""
+	envDebug = false
 
 	envPluginWebhook = ""
+	envEnvKeys       []string
 )
 
 func envCheck(t *testing.T) bool {
@@ -46,12 +48,10 @@ func envCheck(t *testing.T) bool {
 
 func init() {
 	template.RegisterSettings(template.DefaultFunctions)
-	envDebug = os.Getenv("ENV_DEBUG") == "true"
+	envDebug = fetchOsEnvBool(drone_info.EnvKeyPluginDebug, false)
 
-	envUserName = os.Getenv("ENV_PLUGIN_USERNAME")
-	envPassword = os.Getenv("ENV_PLUGIN_PASSWORD")
-
-	envPluginWebhook = os.Getenv("PLUGIN_WEBHOOK")
+	envPluginWebhook = fetchOsEnvStr("PLUGIN_WEBHOOK", "")
+	envEnvKeys = fetchOsEnvArray("ENV_KEYS")
 }
 
 // test case file tools start
@@ -250,6 +250,59 @@ func writeFileAsJson(path string, v interface{}, fileMod fs.FileMode, coverage, 
 // writeFileAsJsonBeauty write json file as 0766 and beauty
 func writeFileAsJsonBeauty(path string, v interface{}, coverage bool) error {
 	return writeFileAsJson(path, v, os.FileMode(0766), coverage, true)
+}
+
+// fetchOsEnvBool fetch os env by key.
+// if not found will return devValue.
+// return env not same as true (will be lowercase, so TRUE is same)
+func fetchOsEnvBool(key string, devValue bool) bool {
+	if os.Getenv(key) == "" {
+		return devValue
+	}
+	return strings.ToLower(os.Getenv(key)) == "true"
+}
+
+// fetchOsEnvInt fetch os env by key.
+// return not found will return devValue.
+// if not parse to int, return devValue
+func fetchOsEnvInt(key string, devValue int) int {
+	if os.Getenv(key) == "" {
+		return devValue
+	}
+	outNum, err := strconv.Atoi(os.Getenv(key))
+	if err != nil {
+		return devValue
+	}
+
+	return outNum
+}
+
+// fetchOsEnvStr fetch os env by key.
+// return not found will return devValue.
+func fetchOsEnvStr(key, devValue string) string {
+	if os.Getenv(key) == "" {
+		return devValue
+	}
+	return os.Getenv(key)
+}
+
+// fetchOsEnvInt fetch os env split by `,` and trim space
+// return not found will return empty.
+func fetchOsEnvArray(key string) []string {
+	var devValueStr []string
+	if os.Getenv(key) == "" {
+		return devValueStr
+	}
+	envValue := os.Getenv(key)
+	splitVal := strings.Split(envValue, ",")
+	if len(splitVal) == 0 {
+		return devValueStr
+	}
+	for _, item := range splitVal {
+		devValueStr = append(devValueStr, strings.TrimSpace(item))
+	}
+
+	return devValueStr
 }
 
 // randomStr

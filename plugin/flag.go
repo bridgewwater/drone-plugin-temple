@@ -92,7 +92,7 @@ func CommonFlag() []cli.Flag {
 			Name:    "config.debug,debug",
 			Usage:   "debug mode",
 			Value:   false,
-			EnvVars: []string{"PLUGIN_DEBUG"},
+			EnvVars: []string{drone_info.EnvKeyPluginDebug},
 		},
 	}
 }
