@@ -1,5 +1,6 @@
-[![go-ubuntu](https://github.com/bridgewwater/drone-plugin-temple/workflows/go-ubuntu/badge.svg?branch=main)](https://github.com/bridgewwater/drone-plugin-temple/actions)
+[![golang-ci](https://github.com/bridgewwater/drone-plugin-temple/workflows/golang-ci/badge.svg?branch=main)](https://github.com/bridgewwater/drone-plugin-temple/actions/workflows/golang-ci.yml)
 [![TravisBuildStatus](https://api.travis-ci.com/bridgewwater/drone-plugin-temple.svg?branch=main)](https://travis-ci.com/bridgewwater/drone-plugin-temple)
+[![go mod version](https://img.shields.io/github/go-mod/go-version/bridgewwater/drone-plugin-temple?label=go.mod)](https://github.com/bridgewwater/drone-plugin-temple)
 [![GoDoc](https://godoc.org/github.com/bridgewwater/drone-plugin-temple?status.png)](https://godoc.org/github.com/bridgewwater/drone-plugin-temple/)
 [![GoReportCard](https://goreportcard.com/badge/github.com/bridgewwater/drone-plugin-temple)](https://goreportcard.com/report/github.com/bridgewwater/drone-plugin-temple)
 [![codecov](https://codecov.io/gh/bridgewwater/drone-plugin-temple/branch/main/graph/badge.svg)](https://codecov.io/gh/bridgewwater/drone-plugin-temple)
@@ -134,6 +135,12 @@ export PLUGIN_MSG_TYPE= \
 
 ```bash
 make run
+```
+
+- ci to fast check
+
+```bash
+make ci
 ```
 
 ## docker

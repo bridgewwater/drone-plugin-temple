@@ -75,6 +75,8 @@ func (p *Plugin) Exec() error {
 
 // randomStr
 // new random string by cnt
+//
+//nolint:golint,unused
 func randomStr(cnt uint) string {
 	var letters = []byte("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
 	result := make([]byte, cnt)
@@ -88,6 +90,8 @@ func randomStr(cnt uint) string {
 
 // randomStr
 // new random string by cnt
+//
+//nolint:golint,unused
 func randomStrBySed(cnt uint, sed string) string {
 	var letters = []byte(sed)
 	result := make([]byte, cnt)
@@ -99,6 +103,7 @@ func randomStrBySed(cnt uint, sed string) string {
 	return string(result)
 }
 
+//nolint:golint,unused
 func setEnvFromStr(key string, val string) {
 	err := os.Setenv(key, val)
 	if err != nil {

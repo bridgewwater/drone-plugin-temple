@@ -19,7 +19,7 @@
 
 ENV_SERVER_TEST_SSH_ALIAS=aliyun-ecs
 ENV_SERVER_TEST_FOLDER=/home/work/Document/
-ENV_SERVER_REPO_SSH_ALIAS=golang-project-temple-base
+ENV_SERVER_REPO_SSH_ALIAS=drone-plugin-temple
 ENV_SERVER_REPO_FOLDER=/home/ubuntu/$(ROOT_NAME)
 
 ENV_INFO_DIST_BIN_NAME=${ENV_ROOT_BUILD_BIN_NAME}

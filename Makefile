@@ -6,7 +6,7 @@ ENV_DIST_MARK=
 
 ROOT_NAME?=drone-plugin-temple
 
-# MakeDocker.mk settings start
+## MakeDocker.mk settings start
 ROOT_OWNER?=bridgewwater
 ROOT_PARENT_SWITCH_TAG=1.17.13-buster
 # for image local build
@@ -15,85 +15,53 @@ INFO_TEST_BUILD_DOCKER_PARENT_IMAGE=golang
 INFO_BUILD_DOCKER_FROM_IMAGE=alpine:3.17
 INFO_BUILD_DOCKER_FILE=Dockerfile
 INFO_TEST_BUILD_DOCKER_FILE=Dockerfile.s6
-# MakeDocker.mk settings end
+## MakeDocker.mk settings end
 
+## run info start
 ENV_RUN_INFO_HELP_ARGS= -h
 ENV_RUN_INFO_ARGS=
+## run info end
 
+## build dist env start
 # change to other build entrance
 ENV_ROOT_BUILD_ENTRANCE = main.go
-ENV_ROOT_BUILD_BIN_NAME = $(ROOT_NAME)
+ENV_ROOT_BUILD_BIN_NAME = ${ROOT_NAME}
 ENV_ROOT_BUILD_PATH = build
-ENV_ROOT_BUILD_BIN_PATH = $(ENV_ROOT_BUILD_PATH)/$(ENV_ROOT_BUILD_BIN_NAME)
+ENV_ROOT_BUILD_BIN_PATH = ${ENV_ROOT_BUILD_PATH}/${ENV_ROOT_BUILD_BIN_NAME}
 ENV_ROOT_LOG_PATH = log/
+# linux windows darwin  list as: go tool dist list
+ENV_DIST_GO_OS=linux
+# amd64 386
+ENV_DIST_GO_ARCH=amd64
+# mark for dist and tag helper
+ENV_ROOT_MANIFEST_PKG_JSON?=package.json
+ENV_ROOT_MAKE_FILE?=Makefile
+ENV_ROOT_CHANGELOG_PATH?=CHANGELOG.md
+## build dist env end
 
+## go test MakeGoTest.mk start
 # ignore used not matching mode
 # set ignore of test case like grep -v -E "vendor|go_fatal_error" to ignore vendor and go_fatal_error package
 ENV_ROOT_TEST_INVERT_MATCH ?= "vendor|go_fatal_error|robotn|shirou|go_robot"
 ifeq ($(OS),Windows_NT)
-ENV_ROOT_TEST_LIST ?= ./...
+ENV_ROOT_TEST_LIST?=./...
 else
-ENV_ROOT_TEST_LIST ?= $$(go list ./... | grep -v -E $(ENV_ROOT_TEST_INVERT_MATCH))
+ENV_ROOT_TEST_LIST?=$$(go list ./... | grep -v -E ${ENV_ROOT_TEST_INVERT_MATCH})
 endif
 # test max time
-ENV_ROOT_TEST_MAX_TIME := 1
+ENV_ROOT_TEST_MAX_TIME:=1m
+## go test MakeGoTest.mk end
 
-# linux windows darwin  list as: go tool dist list
-ENV_DIST_GO_OS = linux
-# amd64 386
-ENV_DIST_GO_ARCH = amd64
-
-# this can change to other mark https://docs.drone.io/pipeline/environment/substitution/
-ifneq ($(strip $(DRONE_TAG)),)
-$(info -> change ENV_DIST_MARK by DRONE_TAG)
-    ENV_DIST_MARK=-tag.${DRONE_TAG}
-else
-    ifneq ($(strip $(DRONE_COMMIT)),)
-$(info -> change ENV_DIST_MARK by DRONE_COMMIT)
-        ENV_DIST_MARK=-${DRONE_COMMIT}
-    endif
-endif
-ifneq ($(strip $(GITHUB_SHA)),)
-$(info -> change ENV_DIST_MARK by GITHUB_SHA)
-    ENV_DIST_MARK=-${GITHUB_SHA}# https://docs.github.com/cn/enterprise-server@2.22/actions/learn-github-actions/environment-variables
-endif
-ifeq ($(strip $(ENV_DIST_MARK)),)
-$(info -> change ENV_DIST_MARK by git)
-    ENV_DIST_MARK=-$(strip $(shell git --no-pager rev-parse --short HEAD))
-endif
-ifneq ($(strip $(ENV_CI_DIST_MARK)),)
-$(info -> change ENV_DIST_MARK by ENV_CI_DIST_MARK)
-    ENV_DIST_MARK=-${ENV_CI_DIST_MARK}
-endif
-
-ifneq ($(strip $(ENV_CI_DIST_VERSION)),)
-$(info -> change ENV_DIST_VERSION by ENV_CI_DIST_VERSION)
-    ENV_DIST_VERSION=${ENV_CI_DIST_VERSION}
-endif
-
-
-# ifeq ($(FILE), $(wildcard $(FILE)))
-# 	@ echo target file not found
-# endif
-
-# MakeGoDist.mk settings
-INFO_ROOT_DIST_PATH ?= dist
-
-include z-MakefileUtils/MakeGoMod.mk
-include z-MakefileUtils/MakeGoAction.mk
+include z-MakefileUtils/MakeBasicEnv.mk
 include z-MakefileUtils/MakeDistTools.mk
+include z-MakefileUtils/MakeGoMod.mk
+include z-MakefileUtils/MakeGoTest.mk
 include z-MakefileUtils/MakeGoDist.mk
+include z-MakefileUtils/MakeGoAction.mk
+# include MakeDockerRun.mk for docker run
 include z-MakefileUtils/MakeDocker.mk
 
-#checkEnvGOPATH:
-#ifndef GOPATH
-#	@echo Environment variable GOPATH is not set
-#	exit 1
-#endif
-
-ENV_ROOT_MAKE_FILE ?= Makefile
-ENV_ROOT_MANIFEST_PKG_JSON ?= package.json
-ENV_ROOT_CHANGELOG_PATH ?= CHANGELOG.md
+all: env
 
 env: distEnv
 	@echo "== project env info start =="
@@ -118,43 +86,6 @@ endif
 	@echo "ENV_DIST_MARK                             ${ENV_DIST_MARK}"
 	@echo "== project env info end =="
 
-versionUtils:
-	node -v
-	npm -v
-	npm install -g commitizen cz-conventional-changelog conventional-changelog-cli
-
-versionHelp:
-	@git fetch --tags
-	@echo "project base info"
-	@echo " project name         : ${ROOT_NAME}"
-	@echo " if error can fix after git set remote url, then run: npm init"
-	@echo ""
-	@echo "=> please check to change version, now is [ ${ENV_DIST_VERSION} ]"
-	@echo "-> check at: ${ENV_ROOT_MAKE_FILE}:4"
-ifeq ($(OS),Windows_NT)
-	@echo " $(shell head -n 4 ${ENV_ROOT_MAKE_FILE} | findstr ${ENV_DIST_VERSION})"
-else
-	@echo " $(shell head -n 4 ${ENV_ROOT_MAKE_FILE} | tail -n 1)"
-endif
-	@echo "-> check at: ${ENV_ROOT_MANIFEST_PKG_JSON}:3"
-ifeq ($(OS),Windows_NT)
-	@echo " $(shell head -n 3 ${ENV_ROOT_MANIFEST_PKG_JSON} | findstr ${ENV_DIST_VERSION})"
-else
-	@echo " $(shell head -n 3 ${ENV_ROOT_MANIFEST_PKG_JSON} | tail -n 1)"
-endif
-
-tagBefore: versionHelp
-	@echo " if error can fix after git set remote url, then run: npm init"
-	@conventional-changelog -i ${ENV_ROOT_CHANGELOG_PATH} -s --skip-unstable
-	@echo ""
-	@echo "=> new CHANGELOG.md at: ${ENV_ROOT_CHANGELOG_PATH}"
-	@echo "place check all file, then can add tag like this!"
-	@echo "$$ git tag -a '${ENV_DIST_VERSION}' -m 'message for this tag'"
-
-cloc:
-	@echo "see: https://stackoverflow.com/questions/26152014/cloc-ignore-exclude-list-file-clocignore"
-	cloc --exclude-list-file=.clocignore .
-
 cleanBuild:
 	-@$(RM) -r ${ENV_ROOT_BUILD_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_BUILD_PATH}"
@@ -165,6 +96,7 @@ cleanLog:
 
 cleanTestData:
 	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
+	@$(RM) coverage.txt
 	@$(RM) -r **/testdata
 	@$(RM) -r **/**/testdata
 	@$(RM) -r **/**/**/testdata
@@ -173,7 +105,7 @@ cleanTestData:
 	@$(RM) -r **/**/**/**/**/**/testdata
 	$(info -> finish clean folder [ testdata ])
 
-clean: cleanBuild cleanTestData cleanLog
+clean: cleanTestData cleanBuild cleanLog
 	@echo "~> clean finish"
 
 cleanAll: clean cleanAllDist
@@ -188,32 +120,10 @@ init:
 	@echo "~> you can use [ make help ] see more task"
 	-go mod verify
 
-test:
-	@echo "=> run test start"
-ifeq ($(OS),Windows_NT)
-	@go test -test.v $(ENV_ROOT_TEST_LIST)
-else
-	@go test -test.v $(ENV_ROOT_TEST_LIST)
-endif
+dep: modVerify modDownload modTidy modVendor
+	@echo "-> just check depends below"
 
-testCoverage:
-	@echo "=> run test coverage start"
-ifeq ($(OS),Windows_NT)
-	@go test -cover -coverprofile=coverage.txt -covermode=count -coverpkg ./... -v $(ENV_ROOT_TEST_LIST)
-else
-	@go test -cover -coverprofile=coverage.txt -covermode=count -coverpkg ./... -v $(ENV_ROOT_TEST_LIST)
-endif
-
-testCoverageBrowser: testCoverage
-	@go tool cover -html=coverage.txt
-
-testBenchmark:
-	@echo "=> run test benchmark start"
-ifeq ($(OS),Windows_NT)
-	@go test -bench=. -test.benchmem ./...
-else
-	@go test -bench=. -test.benchmem -v $(ENV_ROOT_TEST_LIST)
-endif
+ci: modTidy modVerify modFmt modVet modLintRun test
 
 buildMain:
 	@echo "-> start build local OS"
@@ -225,8 +135,8 @@ else
 	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
 endif
 
-buildARCH:
-	@echo "-> start build OS:$(ENV_DIST_GO_OS) ARCH:$(ENV_DIST_GO_ARCH)"
+buildCross:
+	@echo "-> start build OS:${ENV_DIST_GO_OS} ARCH:${ENV_DIST_GO_ARCH}"
 ifeq ($(ENV_DIST_GO_OS),windows)
 	@GOOS=$(ENV_DIST_GO_OS) GOARCH=$(ENV_DIST_GO_ARCH) go build \
 	-a \
@@ -252,7 +162,7 @@ else
 endif
 
 run: export ENV_WEB_AUTO_HOST=false
-run:  cleanBuild buildMain
+run: cleanBuild buildMain
 	@echo "=> run start"
 ifeq ($(OS),windows)
 	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_ARGS}
@@ -260,20 +170,27 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_ARGS}
 endif
 
+cloc:
+	@echo "see: https://stackoverflow.com/questions/26152014/cloc-ignore-exclude-list-file-clocignore"
+	cloc --exclude-list-file=.clocignore .
+
 helpProjectRoot:
 	@echo "Help: Project root Makefile"
-	@echo "-- now build name: $(ROOT_NAME) version: $(ENV_DIST_VERSION)"
-	@echo "-- distTestOS or distReleaseOS will out abi as: $(ENV_DIST_GO_OS) $(ENV_DIST_GO_ARCH) --"
+	@echo "-- now build name: ${ROOT_NAME} version: ${ENV_DIST_VERSION}"
+	@echo "-- distTestOS or distReleaseOS will out abi as: ${ENV_DIST_GO_OS} ${ENV_DIST_GO_ARCH} --"
 	@echo ""
 	@echo "~> make env                 - print env of this project"
 	@echo "~> make init                - check base env of this project"
-	@echo "~> make clean               - remove binary file and log files"
+	@echo "~> make dep                 - check and install by go mod"
+	@echo "~> make clean               - remove build binary file, log files, and testdata"
 	@echo "~> make test                - run test case ignore --invert-match by config"
 	@echo "~> make testCoverage        - run test coverage case ignore --invert-match by config"
 	@echo "~> make testCoverageBrowser - see coverage at browser --invert-match by config"
 	@echo "~> make testBenchmark       - run go test benchmark case all"
-	@echo "~> make dev                 - run as develop"
+	@echo "~> make ci                  - run CI tools tasks"
+	@echo "~> make dev                 - run as develop mode"
+	@echo "~> make run                 - run as ordinary mode"
 
-help: helpGoMod helpDocker helpGoAction helpDist helpProjectRoot
+help: helpGoMod helperGoTest helpDocker helpGoAction helpDist helpProjectRoot
 	@echo ""
-	@echo "-- more info see Makefile include: MakeGoMod.mk MakeDockerRun.mk MakeGoAction.mk MakeDist.mk--"
+	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoTest.mk MakeGoDist.mk MakeDockerRun.mk MakeGoAction.mk --"
