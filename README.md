@@ -94,13 +94,13 @@ export PLUGIN_MSG_TYPE=post \
 ```
 
 ```bash
-make test
+$ make test testBenchmark
 ```
 
 - see help
 
 ```bash
-make dev
+$ make dev
 ```
 
 update main.go file set env then and run
@@ -134,13 +134,13 @@ export PLUGIN_MSG_TYPE= \
 - then run
 
 ```bash
-make run
+$ make run
 ```
 
 - ci to fast check
 
 ```bash
-make ci
+$ make ci
 ```
 
 ## docker
@@ -170,7 +170,7 @@ $ docker run --rm bridgewwater/drone-plugin-temple:latest -h
 
 ### cli tools to init project fast
 
-```
+```bash
 $ curl -L --fail https://raw.githubusercontent.com/bridgewwater/drone-plugin-temple/main/drone-plugin-temple
 # let temp-drone-plugin file folder under $PATH
 $ chmod +x temp-drone-plugin

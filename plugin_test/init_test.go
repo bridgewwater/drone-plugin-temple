@@ -23,6 +23,8 @@ const (
 	defTimeoutFileSecond = 30
 	mockVersion          = "v0.0.0"
 	mockName             = "drone-plugin-temple"
+	keyEnvCiKeys         = "CI_KEYS"
+	keyPluginWebhook     = "PLUGIN_WEBHOOK"
 )
 
 var (
@@ -30,11 +32,12 @@ var (
 
 	envPluginWebhook = ""
 	envEnvKeys       []string
+	strData          []string
 )
 
 func envCheck(t *testing.T) bool {
 	mustSetEnvList := []string{
-		"PLUGIN_WEBHOOK",
+		keyPluginWebhook,
 	}
 	for _, item := range mustSetEnvList {
 		if os.Getenv(item) == "" {
@@ -50,8 +53,11 @@ func init() {
 	template.RegisterSettings(template.DefaultFunctions)
 	envDebug = fetchOsEnvBool(drone_info.EnvKeyPluginDebug, false)
 
-	envPluginWebhook = fetchOsEnvStr("PLUGIN_WEBHOOK", "")
-	envEnvKeys = fetchOsEnvArray("ENV_KEYS")
+	envPluginWebhook = fetchOsEnvStr(keyPluginWebhook, "")
+	envEnvKeys = fetchOsEnvArray(keyEnvCiKeys)
+	for i := 0; i < 200; i++ {
+		strData = append(strData, randomStr(300))
+	}
 }
 
 // test case file tools start
@@ -188,6 +194,8 @@ func pathIsDir(path string) bool {
 }
 
 // rmDir remove dir by path
+//
+//nolint:golint,unused
 func rmDir(path string, force bool) error {
 	if force {
 		return os.RemoveAll(path)
@@ -370,6 +378,8 @@ func setEnvStr(t *testing.T, key string, val string) {
 
 // setEnvBool
 // set env by key and val
+//
+//nolint:golint,unused
 func setEnvBool(t *testing.T, key string, val bool) {
 	var err error
 	if val {
@@ -384,6 +394,8 @@ func setEnvBool(t *testing.T, key string, val bool) {
 
 // setEnvU64
 // set env by key and val
+//
+//nolint:golint,unused
 func setEnvU64(t *testing.T, key string, val uint64) {
 	err := os.Setenv(key, strconv.FormatUint(val, 10))
 	if err != nil {
@@ -393,6 +405,8 @@ func setEnvU64(t *testing.T, key string, val uint64) {
 
 // setEnvInt64
 // set env by key and val
+//
+//nolint:golint,unused
 func setEnvInt64(t *testing.T, key string, val int64) {
 	err := os.Setenv(key, strconv.FormatInt(val, 10))
 	if err != nil {

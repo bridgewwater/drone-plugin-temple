@@ -43,6 +43,7 @@ func Test_test_data_json(t *testing.T) {
 		Debug:         envDebug,
 		CiBuildNumber: 1,
 		CiKey:         "foo",
+		CiKeys:        envEnvKeys,
 	}
 
 	// do _test_data_json
