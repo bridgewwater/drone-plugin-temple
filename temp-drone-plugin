@@ -276,9 +276,9 @@ findFileReplaceByRegular ${new_project} "*.md" ${temple_name} ${new_project}
 
 # remove README.md last line
   if [[ ${release} -eq "Darwin" ]]; then
-    sed -i "" '171,179d' ./${new_project}/README.md
+    sed -i "" '172,180d' ./${new_project}/README.md
   else
-    sed -i '171,179d' ./${new_project}/README.md
+    sed -i '172,180d' ./${new_project}/README.md
   fi
 
 # re init go mod
