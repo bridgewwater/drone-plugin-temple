@@ -78,7 +78,7 @@ $ echo "go mod vendor"
 
 ## evn
 
-- golang sdk 1.17+
+- minimum go version: go 1.17
 
 ```bash
 make init dep
@@ -103,7 +103,7 @@ $ make test testBenchmark
 $ make dev
 ```
 
-update main.go file set env then and run
+edit [main.go](main.go) file set env then and run
 
 ```bash
 export PLUGIN_MSG_TYPE= \

@@ -18,7 +18,7 @@ INFO_TEST_BUILD_DOCKER_FILE=Dockerfile.s6
 ## MakeDocker.mk settings end
 
 ## run info start
-ENV_RUN_INFO_HELP_ARGS= -h
+ENV_RUN_INFO_HELP_ARGS=-h
 ENV_RUN_INFO_ARGS=
 ## run info end
 
@@ -42,7 +42,7 @@ ENV_ROOT_CHANGELOG_PATH?=CHANGELOG.md
 ## go test MakeGoTest.mk start
 # ignore used not matching mode
 # set ignore of test case like grep -v -E "vendor|go_fatal_error" to ignore vendor and go_fatal_error package
-ENV_ROOT_TEST_INVERT_MATCH?="vendor|go_fatal_error|robotn|shirou|go_robot"
+ENV_ROOT_TEST_INVERT_MATCH?="vendor|go_fatal_error|robotn|shirou"
 ifeq ($(OS),Windows_NT)
 ENV_ROOT_TEST_LIST?=./...
 else
@@ -54,6 +54,7 @@ ENV_ROOT_TEST_MAX_TIME:=1m
 
 include z-MakefileUtils/MakeBasicEnv.mk
 include z-MakefileUtils/MakeDistTools.mk
+include z-MakefileUtils/MakeGoList.mk
 include z-MakefileUtils/MakeGoMod.mk
 include z-MakefileUtils/MakeGoTest.mk
 include z-MakefileUtils/MakeGoDist.mk
@@ -155,7 +156,7 @@ else
 	@echo "-> finish build out path: ${ENV_ROOT_BUILD_BIN_PATH}"
 endif
 
-dev: export ENV_WEB_AUTO_HOST=true
+dev: export PLUGIN_DEBUG=true
 dev: cleanBuild buildMain
 ifeq ($(OS),windows)
 	$(subst /,\,${ENV_ROOT_BUILD_BIN_PATH}).exe ${ENV_RUN_INFO_HELP_ARGS}
@@ -163,7 +164,7 @@ else
 	${ENV_ROOT_BUILD_BIN_PATH} ${ENV_RUN_INFO_HELP_ARGS}
 endif
 
-run: export ENV_WEB_AUTO_HOST=false
+run: export PLUGIN_DEBUG=false
 run: cleanBuild buildMain
 	@echo "=> run start"
 ifeq ($(OS),windows)
@@ -178,6 +179,19 @@ cloc:
 
 helpProjectRoot:
 	@echo "Help: Project root Makefile"
+ifeq ($(OS),Windows_NT)
+	@echo ""
+	@echo "warning: other install make cli tools has bug, please use: scoop install main/make"
+	@echo " run will at make tools version 4.+"
+	@echo "windows use this kit must install tools blow:"
+	@echo ""
+	@echo "https://scoop.sh/#/apps?q=busybox&s=0&d=1&o=true"
+	@echo "-> scoop install main/busybox"
+	@echo "and"
+	@echo "https://scoop.sh/#/apps?q=shasum&s=0&d=1&o=true"
+	@echo "-> scoop install main/shasum"
+	@echo ""
+endif
 	@echo "-- now build name: ${ROOT_NAME} version: ${ENV_DIST_VERSION}"
 	@echo "-- distTestOS or distReleaseOS will out abi as: ${ENV_DIST_GO_OS} ${ENV_DIST_GO_ARCH} --"
 	@echo ""
@@ -194,6 +208,6 @@ helpProjectRoot:
 	@echo "~> make dev                 - run as develop mode"
 	@echo "~> make run                 - run as ordinary mode"
 
-help: helpGoMod helperGoTest helpDocker helpGoAction helpDist helpProjectRoot
+help: helpGoMod helpGoTest helpGoDist helpDocker helpProjectRoot
 	@echo ""
 	@echo "-- more info see Makefile include: MakeGoMod.mk MakeGoTest.mk MakeGoDist.mk MakeDockerRun.mk MakeGoAction.mk --"
