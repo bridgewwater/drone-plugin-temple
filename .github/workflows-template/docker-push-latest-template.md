@@ -5,8 +5,6 @@
 
 ## buildx template
 
-- file `docker-image-latest.yml`
-
 ```yml
 name: Docker Image buildx latest
 
@@ -20,7 +18,7 @@ env:
   # name of docker image
   DOCKER_HUB_USER: bridgewwater
   IMAGE_NAME: drone-plugin-temple
-  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64,linux/arm/v7
+  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64/v8,linux/arm/v7
 
 jobs:
   build:
@@ -30,7 +28,7 @@ jobs:
         docker_image:
           - platform: linux/amd64
           - platform: linux/386
-          - platform: linux/arm64
+          - platform: linux/arm64/v8
           - platform: linux/arm/v7
     runs-on: ubuntu-latest
     steps:
@@ -112,7 +110,6 @@ jobs:
           no-cache: false
           pull: true
           push: true
-
 ```
 
 ## base template by shell
@@ -137,7 +134,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Build the Docker image
       run: |
         docker build . --file Dockerfile --tag $IMAGE_NAME
@@ -181,12 +178,13 @@ env:
   # name of docker image
   DOCKER_HUB_USER: bridgewwater
   IMAGE_NAME: drone-plugin-temple
+  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64/v8,linux/arm/v7
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: "Login into registry as user: $DOCKER_HUB_USER"
       run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u $DOCKER_HUB_USER --password-stdin
     - name: Docker buildx ready
@@ -195,6 +193,22 @@ jobs:
         docker run --privileged --rm tonistiigi/binfmt --install all
         docker buildx create --use --name mybuilder
         docker buildx inspect mybuilder --bootstrap
+    - name: Build dry
+      run: |
+        # parse docker image id
+        IMAGE_ID=$DOCKER_HUB_USER/$IMAGE_NAME
+        # lower case all
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+        # ref get version
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+        # replace v chat at tag
+        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+        # Use Docker `latest` tag convention when get main
+        [ "$VERSION" == "main" ] && VERSION=latest
+
+        echo IMAGE_ID=$IMAGE_ID
+        echo VERSION=$VERSION
+        docker buildx build -t $IMAGE_ID:$VERSION --platform=$DOCKER_IMAGE_PLATFORMS .
     - name: Push image
       run: |
         # parse docker image id
@@ -211,6 +225,6 @@ jobs:
         echo IMAGE_ID=$IMAGE_ID
         echo VERSION=$VERSION
         # build
-        docker buildx build -t $IMAGE_ID:$VERSION --platform=linux/arm,linux/arm64,linux/amd64 . --push
+        docker buildx build -t $IMAGE_ID:$VERSION --platform=$DOCKER_IMAGE_PLATFORMS . --push
 
 ```

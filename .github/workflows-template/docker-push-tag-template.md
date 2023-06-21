@@ -6,24 +6,23 @@
 
 ## buildx template
 
-- file `docker-image-tag.yml`
-
-```yaml
+```yml
 name: Docker Image buildx tag semver
-
-permissions:
-  contents: write
 
 on:
   push:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0.0 v1.0, v20.15.10
 
+permissions:
+  contents: write
+  discussions: write
+
 env:
   # name of docker image
   DOCKER_HUB_USER: bridgewwater
   IMAGE_NAME: drone-plugin-temple
-  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64,linux/arm/v7
+  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64/v8,linux/arm/v7
 
 jobs:
   build:
@@ -33,7 +32,7 @@ jobs:
         docker_image:
           - platform: linux/amd64
           - platform: linux/386
-          - platform: linux/arm64
+          - platform: linux/arm64/v8
           - platform: linux/arm/v7
     runs-on: ubuntu-latest
     steps:
@@ -116,19 +115,19 @@ jobs:
           pull: true
           push: true
 
-#  release:
-#    runs-on: ubuntu-latest
-#    needs:
-#      - push
-#    steps:
-#      - uses: softprops/action-gh-release@master # https://github.com/softprops/action-gh-release#-customizing
-#        name: pre release
-#        if: startsWith(github.ref, 'refs/tags/')
-#        with:
-#          ## with permissions to create releases in the other repo
-#          token: "${{ secrets.GITHUB_TOKEN }}"
-#          # body_path: ${{ github.workspace }}-CHANGELOG.txt
-#          prerelease: true
+  release:
+    runs-on: ubuntu-latest
+    needs:
+      - push
+    steps:
+      - uses: softprops/action-gh-release@master # https://github.com/softprops/action-gh-release#-customizing
+        name: pre release
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          ## with permissions to create releases in the other repo
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          # body_path: ${{ github.workspace }}-CHANGELOG.txt
+          prerelease: true
 
 ```
 
@@ -138,9 +137,6 @@ jobs:
 
 ```yml
 name: Docker Image build by tag on alpine
-
-permissions:
-  contents: write
 
 on:
   push:
@@ -157,7 +153,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Build the Docker image
       run: |
         docker build . --file Dockerfile --tag $IMAGE_NAME
@@ -191,59 +187,69 @@ jobs:
 
 ```
 
-## buildx template by shell
+## buildx template
 
 ```yml
 name: Docker Image buildx by tag on alpine
-
-permissions:
-  contents: write
 
 on:
   push:
     tags:
       - '*' # Push events to matching *, i.e. 1.0.0 v1.0, v20.15.10
 
+permissions:
+  contents: write
+  discussions: write
+
 env:
   # name of docker image
   DOCKER_HUB_USER: bridgewwater
-  IMAGE_BUILD_OS_NAME: alpine
+  IMAGE_BUILD_OS_NAME: buster
   IMAGE_NAME: drone-plugin-temple
+  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64/v8,linux/arm/v7
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: "Login into registry as user: $DOCKER_HUB_USER"
-      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u $DOCKER_HUB_USER --password-stdin
-    - name: Docker buildx ready
-      run: |
-        DOCKER_CLI_EXPERIMENTAL=enabled
-        docker run --privileged --rm tonistiigi/binfmt --install all
-        docker buildx create --use --name mybuilder
-        docker buildx inspect mybuilder --bootstrap
-    - name: Push image
-      run: |
-        # now pwd
-        echo $PWD
+      - uses: actions/checkout@v3
+      - name: "Login into registry as user: $DOCKER_HUB_USER"
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u $DOCKER_HUB_USER --password-stdin
+      - name: Docker buildx ready
+        run: |
+          DOCKER_CLI_EXPERIMENTAL=enabled
+          docker run --privileged --rm tonistiigi/binfmt --install all
+          docker buildx create --use --name mybuilder
+          docker buildx inspect mybuilder --bootstrap
+      - name: Push image
+        run: |
+          # now pwd
+          echo $PWD
 
-        # parse docker image id
-        IMAGE_ID=$DOCKER_HUB_USER/$IMAGE_NAME
-        # lower case all git
-        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-        # ref get version
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-        # replace v chat at tag
-        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-        # Use Docker `latest` tag convention when get main
-        [ "$VERSION" == "main" ] && VERSION=latest
-        # add docker build os
-        VERSION=$VERSION-${IMAGE_BUILD_OS_NAME}
+          # parse docker image id
+          IMAGE_ID=$DOCKER_HUB_USER/$IMAGE_NAME
+          # lower case all git
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # ref get version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # replace v chat at tag
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention when get main
+          [ "$VERSION" == "main" ] && VERSION=latest
+          # add docker build os
+          VERSION=$VERSION-${IMAGE_BUILD_OS_NAME}
 
-        echo IMAGE_ID=$IMAGE_ID
-        echo VERSION=$VERSION
-        # build and push
-        docker buildx build -t $IMAGE_ID:$VERSION --platform=linux/arm,linux/arm64,linux/amd64 . --push
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          # build and push
+          docker buildx build -t $IMAGE_ID:$VERSION --platform=$DOCKER_IMAGE_PLATFORMS . --push
+      - uses: softprops/action-gh-release@master # https://github.com/softprops/action-gh-release#-customizing
+        name: pre release
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          ## with permissions to create releases in the other repo
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          #        body_path: ${{ github.workspace }}-CHANGELOG.txt
+          prerelease: true
 
 ```
