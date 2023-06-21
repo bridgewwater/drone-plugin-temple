@@ -17,13 +17,21 @@
 ## Contributing
 
 [![Contributor Covenant](https://img.shields.io/badge/contributor%20covenant-v1.4-ff69b4.svg)](.github/CONTRIBUTING_DOC/CODE_OF_CONDUCT.md)
-[![GitHub contributors](https://img.shields.io/github/contributors/bridgewwater/template-golang-lib)](https://github.com/bridgewwater/template-golang-lib/graphs/contributors)
+[![GitHub contributors](https://img.shields.io/github/contributors/bridgewwater/drone-plugin-temple)](https://github.com/bridgewwater/drone-plugin-temple/graphs/contributors)
 
 We welcome community contributions to this project.
 
 Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for more information on how to get started.
 
-## Pipeline Settings (.drone.yml)
+## usage
+
+- use this template, replace list below
+  - `github.com/bridgewwater/drone-plugin-temple` to your package name
+  - `bridgewwater` to your owner name
+  - `drone-plugin-temple` to your project name
+  - `go 1.17`, `^1.17`, `1.17.13` to new go version for dev
+
+### Pipeline Settings (.drone.yml)
 
 `1.x`
 
@@ -172,11 +180,6 @@ $ make dockerTestPruneLatest
 # see how to use
 $ docker run --rm bridgewwater/drone-plugin-temple:latest -h
 ```
-
-## use
-
-- use to replace
-  `bridgewwater/drone-plugin-temple` to you code
 
 ### cli tools to init project fast
 
