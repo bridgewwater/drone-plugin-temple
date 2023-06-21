@@ -19,7 +19,7 @@ on:
 env:
   # name of docker image
   DOCKER_HUB_USER: bridgewwater
-  IMAGE_NAME: golang-project-temple-base
+  IMAGE_NAME: drone-plugin-temple
   DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64,linux/arm/v7
 
 jobs:
@@ -131,7 +131,7 @@ on:
 env:
   # name of docker image
   DOCKER_HUB_USER: bridgewwater
-  IMAGE_NAME: golang-project-temple-base
+  IMAGE_NAME: drone-plugin-temple
 
 jobs:
   build:
@@ -180,7 +180,7 @@ on:
 env:
   # name of docker image
   DOCKER_HUB_USER: bridgewwater
-  IMAGE_NAME: golang-project-temple-base
+  IMAGE_NAME: drone-plugin-temple
 
 jobs:
   build:
