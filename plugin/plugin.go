@@ -74,7 +74,8 @@ func (p *Plugin) Exec() error {
 }
 
 // randomStr
-// new random string by cnt
+//
+//	new random string by cnt
 //
 //nolint:golint,unused
 func randomStr(cnt uint) string {
@@ -88,8 +89,9 @@ func randomStr(cnt uint) string {
 	return string(result)
 }
 
-// randomStr
-// new random string by cnt
+// randomStrBySed
+//
+//	new random string by cnt and sed
 //
 //nolint:golint,unused
 func randomStrBySed(cnt uint, sed string) string {
@@ -103,6 +105,10 @@ func randomStrBySed(cnt uint, sed string) string {
 	return string(result)
 }
 
+// setEnvFromStr
+//
+//	set env from string
+//
 //nolint:golint,unused
 func setEnvFromStr(key string, val string) {
 	err := os.Setenv(key, val)

@@ -63,15 +63,17 @@ func init() {
 // test case file tools start
 
 // goldenDataSaveFast
-// save data to golden file
-// style as: "TestFuncName-extraName.golden"
+//
+//	save data to golden file
+//	style as: "TestFuncName-extraName.golden"
 func goldenDataSaveFast(t *testing.T, data []byte, extraName string) error {
 	return goldenDataSave(t, data, extraName, os.FileMode(0766))
 }
 
 // goldenDataSave
-// save data to golden file
-// style as: "TestFuncName-extraName.golden"
+//
+//	save data to golden file
+//	style as: "TestFuncName-extraName.golden"
 func goldenDataSave(t *testing.T, data []byte, extraName string, fileMod fs.FileMode) error {
 	testDataFolderFullPath, err := getOrCreateTestDataFolderFullPath()
 	if err != nil {
@@ -86,8 +88,9 @@ func goldenDataSave(t *testing.T, data []byte, extraName string, fileMod fs.File
 }
 
 // goldenDataReadAsByte
-// read golden file as byte
-// style as: "TestFuncName-extraName.golden"
+//
+//	read golden file as byte
+//	style as: "TestFuncName-extraName.golden"
 func goldenDataReadAsByte(t *testing.T, extraName string) ([]byte, error) {
 	testDataFolderFullPath, err := getOrCreateTestDataFolderFullPath()
 	if err != nil {
@@ -106,8 +109,9 @@ func goldenDataReadAsByte(t *testing.T, extraName string) ([]byte, error) {
 var currentTestDataFolderAbsPath = ""
 
 // getOrCreateTestDataFullPath
-// get or create test data full path will under this package testdata
-// this function will create dir for return full path
+//
+//	get or create test data full path will under this package testdata
+//	this function will create dir for return full path
 func getOrCreateTestDataFullPath(elem ...string) (string, error) {
 	if elem == nil || len(elem) < 1 {
 		return "", fmt.Errorf("must has one elem")
@@ -137,7 +141,8 @@ func getOrCreateTestDataFullPath(elem ...string) (string, error) {
 }
 
 // getOrCreateTestDataFolderFullPath
-// will create testdata folder under this package
+//
+//	will create testdata folder under this package
 func getOrCreateTestDataFolderFullPath() (string, error) {
 	if currentTestDataFolderAbsPath != "" {
 		return currentTestDataFolderAbsPath, nil
@@ -157,7 +162,9 @@ func getOrCreateTestDataFolderFullPath() (string, error) {
 	return currentTestDataFolderAbsPath, nil
 }
 
-// getCurrentFolderPath can get run path this golang dir
+// getCurrentFolderPath
+//
+//	can get run path this golang dir
 func getCurrentFolderPath() (string, error) {
 	_, file, _, ok := runtime.Caller(1)
 	if !ok {
@@ -166,7 +173,9 @@ func getCurrentFolderPath() (string, error) {
 	return filepath.Dir(file), nil
 }
 
-// pathExists path exists
+// pathExists
+//
+//	path exists
 func pathExists(path string) (bool, error) {
 	_, err := os.Stat(path)
 	if err == nil {
@@ -178,13 +187,17 @@ func pathExists(path string) (bool, error) {
 	return false, err
 }
 
-// pathExistsFast path exists fast
+// pathExistsFast
+//
+//	path exists fast
 func pathExistsFast(path string) bool {
 	exists, _ := pathExists(path)
 	return exists
 }
 
-// pathIsDir path is dir
+// pathIsDir
+//
+//	path is dir
 func pathIsDir(path string) bool {
 	s, err := os.Stat(path)
 	if err != nil {
@@ -193,7 +206,9 @@ func pathIsDir(path string) bool {
 	return s.IsDir()
 }
 
-// rmDir remove dir by path
+// rmDir
+//
+//	remove dir by path
 //
 //nolint:golint,unused
 func rmDir(path string, force bool) error {
@@ -210,7 +225,9 @@ func rmDir(path string, force bool) error {
 	return fmt.Errorf("remove dir not exist path: %s , use force can cover this err", path)
 }
 
-// mkdir will use FileMode 0766
+// mkdir
+//
+//	will use FileMode 0766
 func mkdir(path string) error {
 	err := os.MkdirAll(path, os.FileMode(0766))
 	if err != nil {
@@ -220,7 +237,8 @@ func mkdir(path string) error {
 }
 
 // readFileAsByte
-// read file as byte array
+//
+//	read file as byte array
 func readFileAsByte(path string) ([]byte, error) {
 	exists, err := pathExists(path)
 	if err != nil {
@@ -238,7 +256,8 @@ func readFileAsByte(path string) ([]byte, error) {
 }
 
 // readFileAsJson
-// read file as json
+//
+//	read file as json
 func readFileAsJson(path string, v interface{}) error {
 	fileAsByte, err := readFileAsByte(path)
 	err = json.Unmarshal(fileAsByte, v)
@@ -249,11 +268,12 @@ func readFileAsJson(path string, v interface{}) error {
 }
 
 // writeFileByByte
-// write bytes to file
-// path most use Abs Path
-// data []byte
-// fileMod os.FileMode(0666) or os.FileMode(0644)
-// coverage true will coverage old
+//
+//	write bytes to file
+//	path most use Abs Path
+//	data []byte
+//	fileMod os.FileMode(0666) or os.FileMode(0644)
+//	coverage true will coverage old
 func writeFileByByte(path string, data []byte, fileMod fs.FileMode, coverage bool) error {
 	if !coverage {
 		exists, err := pathExists(path)
@@ -279,11 +299,12 @@ func writeFileByByte(path string, data []byte, fileMod fs.FileMode, coverage boo
 }
 
 // writeFileAsJson write json file
-// path most use Abs Path
-// v data
-// fileMod os.FileMode(0666) or os.FileMode(0644)
-// coverage true will coverage old
-// beauty will format json when write
+//
+//	path most use Abs Path
+//	v data
+//	fileMod os.FileMode(0666) or os.FileMode(0644)
+//	coverage true will coverage old
+//	beauty will format json when write
 func writeFileAsJson(path string, v interface{}, fileMod fs.FileMode, coverage, beauty bool) error {
 	if !coverage {
 		exists, err := pathExists(path)
@@ -309,14 +330,18 @@ func writeFileAsJson(path string, v interface{}, fileMod fs.FileMode, coverage, 
 	return writeFileByByte(path, data, fileMod, coverage)
 }
 
-// writeFileAsJsonBeauty write json file as 0766 and beauty
+// writeFileAsJsonBeauty
+//
+//	write json file as 0766 and beauty
 func writeFileAsJsonBeauty(path string, v interface{}, coverage bool) error {
 	return writeFileAsJson(path, v, os.FileMode(0766), coverage, true)
 }
 
-// fetchOsEnvBool fetch os env by key.
-// if not found will return devValue.
-// return env not same as true (will be lowercase, so TRUE is same)
+// fetchOsEnvBool
+//
+//	fetch os env by key.
+//	if not found will return devValue.
+//	return env not same as true (will be lowercase, so TRUE is same)
 func fetchOsEnvBool(key string, devValue bool) bool {
 	if os.Getenv(key) == "" {
 		return devValue
@@ -324,9 +349,11 @@ func fetchOsEnvBool(key string, devValue bool) bool {
 	return strings.ToLower(os.Getenv(key)) == "true"
 }
 
-// fetchOsEnvInt fetch os env by key.
-// return not found will return devValue.
-// if not parse to int, return devValue
+// fetchOsEnvInt
+//
+//	fetch os env by key.
+//	return not found will return devValue.
+//	if not parse to int, return devValue
 func fetchOsEnvInt(key string, devValue int) int {
 	if os.Getenv(key) == "" {
 		return devValue
@@ -339,8 +366,10 @@ func fetchOsEnvInt(key string, devValue int) int {
 	return outNum
 }
 
-// fetchOsEnvStr fetch os env by key.
-// return not found will return devValue.
+// fetchOsEnvStr
+//
+//	fetch os env by key.
+//	return not found will return devValue.
 func fetchOsEnvStr(key, devValue string) string {
 	if os.Getenv(key) == "" {
 		return devValue
@@ -348,8 +377,10 @@ func fetchOsEnvStr(key, devValue string) string {
 	return os.Getenv(key)
 }
 
-// fetchOsEnvInt fetch os env split by `,` and trim space
-// return not found will return empty.
+// fetchOsEnvInt
+//
+//	fetch os env split by `,` and trim space
+//	return not found will return empty.
 func fetchOsEnvArray(key string) []string {
 	var devValueStr []string
 	if os.Getenv(key) == "" {
@@ -368,7 +399,8 @@ func fetchOsEnvArray(key string) []string {
 }
 
 // setEnvStr
-// set env by key and val
+//
+//	set env by key and val
 func setEnvStr(t *testing.T, key string, val string) {
 	err := os.Setenv(key, val)
 	if err != nil {
@@ -377,7 +409,8 @@ func setEnvStr(t *testing.T, key string, val string) {
 }
 
 // setEnvBool
-// set env by key and val
+//
+//	set env by key and val
 //
 //nolint:golint,unused
 func setEnvBool(t *testing.T, key string, val bool) {
@@ -393,7 +426,8 @@ func setEnvBool(t *testing.T, key string, val bool) {
 }
 
 // setEnvU64
-// set env by key and val
+//
+//	set env by key and val
 //
 //nolint:golint,unused
 func setEnvU64(t *testing.T, key string, val uint64) {
@@ -404,7 +438,8 @@ func setEnvU64(t *testing.T, key string, val uint64) {
 }
 
 // setEnvInt64
-// set env by key and val
+//
+//	set env by key and val
 //
 //nolint:golint,unused
 func setEnvInt64(t *testing.T, key string, val int64) {
@@ -415,7 +450,8 @@ func setEnvInt64(t *testing.T, key string, val int64) {
 }
 
 // randomStr
-// new random string by cnt
+//
+//	new random string by cnt
 func randomStr(cnt uint) string {
 	var letters = []byte("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
 	result := make([]byte, cnt)
@@ -428,7 +464,8 @@ func randomStr(cnt uint) string {
 }
 
 // randomInt
-// new random int by max
+//
+//	new random int by max
 func randomInt(max int) int {
 	rand.Seed(time.Now().Unix())
 	return rand.Intn(max)
