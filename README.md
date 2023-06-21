@@ -23,6 +23,12 @@ We welcome community contributions to this project.
 
 Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for more information on how to get started.
 
+## Features
+
+- [ ] more perfect test case coverage
+- [ ] more perfect benchmark case
+- more see [features/README.md](features/README.md)
+
 ## usage
 
 - use this template, replace list below
@@ -58,10 +64,6 @@ steps:
         - failure
         # - success
 ```
-
-# Features
-
-- more see [features/README.md](features/README.md)
 
 # dev
 
