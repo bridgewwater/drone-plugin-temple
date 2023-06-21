@@ -36,9 +36,11 @@ HELP
 }
 
 ARG=$1
-if [[ "$ARG" =~ "-h" ]]; then
-  Usage
-  exit 0
+if [[ $# -eq 1 ]]; then
+  if [[ "$ARG" =~ "-h" ]]; then
+    Usage
+    exit 0
+  fi
 fi
 
 pV() {
@@ -275,11 +277,11 @@ findFileReplaceByRegular ${new_project} "*.md" ${temple_group} ${new_repo_group}
 findFileReplaceByRegular ${new_project} "*.md" ${temple_name} ${new_project}
 
 # remove README.md last line
-  if [[ ${release} -eq "Darwin" ]]; then
-    sed -i "" '181,190d' ./${new_project}/README.md
-  else
-    sed -i '181,190d' ./${new_project}/README.md
-  fi
+if [[ ${release} -eq "Darwin" ]]; then
+  sed -i "" '181,190d' ./${new_project}/README.md
+else
+  sed -i '181,190d' ./${new_project}/README.md
+fi
 
 # re init go mod
 #cd ${new_project}
