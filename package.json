@@ -1,6 +1,28 @@
 {
   "name": "drone-plugin-temple",
   "version": "0.1.2",
-  "dependencies": {
-  }
+  "description": "template of golang cli tools",
+  "directories": {
+    "doc": "doc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bridgewwater/drone-plugin-temple.git"
+  },
+  "keywords": [
+    "go",
+    "drone",
+    "docker",
+    "devops"
+  ],
+  "author": {
+    "name": "bridgewwater",
+    "email": "",
+    "url": "https://github.com/bridgewwater/drone-plugin-temple"
+  },
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/bridgewwater/drone-plugin-temple/issues"
+  },
+  "homepage": "https://github.com/bridgewwater/drone-plugin-temple#readme"
 }
