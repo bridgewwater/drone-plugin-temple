@@ -19,7 +19,7 @@ shell_run_path=$(
 
 function Usage() {
   cat <<HELP
-${shell_run_name} can use fast init drone plugin project with golang
+${shell_run_name} can use fast init golang lib project with github
   Warning must use golang SDK 1.17+
   now temple is ${temple_url}
 
@@ -30,8 +30,8 @@ default repo setting
 Usage: ${shell_run_name} [newproject] [new group/user] [new host]
 
 Example:
-    ${shell_run_name} drone-xxx-plugin
-    ${shell_run_name} drone-xxx-plugin sinlov github.com
+    ${shell_run_name} newgoprojt
+    ${shell_run_name} newgoprojt sinlov github.com
 HELP
 }
 
@@ -170,6 +170,7 @@ findFileReplaceByRegular() {
   fi
 }
 
+
 removeFileExist() {
   target_file_path=$1
   if [[ -z "${target_file_path}" ]]; then
@@ -264,8 +265,8 @@ replaceFileByRegular ${new_project}/docker-compose.yml ${temple_name} ${new_proj
 replaceFileByRegular ${new_project}/Makefile ${temple_name} ${new_project}
 replaceFileByRegular ${new_project}/**/*.mk ${temple_name} ${new_project}
 replaceFileByRegular ${new_project}/**/*.mk ${temple_group} ${new_repo_group}
-replaceFileByRegular ${new_project}/package.json ${temple_group}\/${temple_name} ${new_repo_group}\/${new_project}
-replaceFileByRegular ${new_project}/package.json ${temple_name} ${new_project}
+ replaceFileByRegular ${new_project}/package.json ${temple_repo_host}\/${temple_group}\/${temple_name} ${new_repo_host}\/${new_repo_group}\/${new_project}
+ replaceFileByRegular ${new_project}/package.json ${temple_name} ${new_project}
 # replace code at folder
 findFileReplaceByRegular ${new_project} "*.go" ${temple_repo_host}\/${temple_group}\/${temple_name} ${new_repo_host}\/${new_repo_group}\/${new_project}
 findFileReplaceByRegular ${new_project} "*.go" ${temple_group} ${new_repo_group}
@@ -275,35 +276,15 @@ findFileReplaceByRegular ${new_project} "*.mk" ${temple_group} ${new_repo_group}
 findFileReplaceByRegular ${new_project} "*.mk" ${temple_name} ${new_project}
 findFileReplaceByRegular ${new_project} "*.md" ${temple_group} ${new_repo_group}
 findFileReplaceByRegular ${new_project} "*.md" ${temple_name} ${new_project}
+findFileReplaceByRegular ${new_project} "*.yml" ${temple_group} ${new_repo_group}
+findFileReplaceByRegular ${new_project} "*.yml" ${temple_name} ${new_project}
 
 # remove README.md last line
-if [[ ${release} -eq "Darwin" ]]; then
-  sed -i "" '186,194d' ./${new_project}/README.md
-else
-  sed -i '186,194d' ./${new_project}/README.md
-fi
-
-# re init go mod
-#cd ${new_project}
-#if [[ -f "go.mod" ]]; then
-#  rm -f go.mod
-#  rm -f go.sum
-#  GO111MODULE=on go mod init
-#fi
-#cd ..${new_project}
-
-read -p "Do you can keep sample code (default: no)? [y/n] " read_want_keep_sample_code
-case ${read_want_keep_sample_code} in
-[yY]*)
-  echo " now keep sample code"
-  ;;
-*)
-  echo " just remove sample code"
-  if [[ -d ./${new_project}/stack ]]; then
-    rm -rf ./${new_project}/stack
+  if [[ ${release} -eq "Darwin" ]]; then
+    sed -i "" '13,22d' ./${new_project}/README.md
+  else
+    sed -i '13,22d' ./${new_project}/README.md
   fi
-  ;;
-esac
 
 # choose LICENSE
 read -p "Choose license (default: apache)? [mit] " read_choose_license

@@ -10,6 +10,16 @@
 [![docker pulls](https://img.shields.io/docker/pulls/bridgewwater/drone-plugin-temple)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple/tags?page=1&ordering=last_updated)
 [![github release](https://img.shields.io/github/v/release/bridgewwater/drone-plugin-temple?style=social)](https://github.com/bridgewwater/drone-plugin-temple/releases)
 
+### cli tools to init project fast
+
+```bash
+$ curl -L --fail https://raw.githubusercontent.com/bridgewwater/drone-plugin-temple/main/drone-plugin-temple
+# let temp-drone-plugin file folder under $PATH
+$ chmod +x temp-drone-plugin
+# see how to use
+$ temp-drone-plugin -h
+```
+
 ## for what
 
 - this project used to drone CI
@@ -181,14 +191,4 @@ $ make dockerTestPruneLatest
 
 # see how to use
 $ docker run --rm bridgewwater/drone-plugin-temple:latest -h
-```
-
-### cli tools to init project fast
-
-```bash
-$ curl -L --fail https://raw.githubusercontent.com/bridgewwater/drone-plugin-temple/main/drone-plugin-temple
-# let temp-drone-plugin file folder under $PATH
-$ chmod +x temp-drone-plugin
-# see how to use
-$ temp-drone-plugin -h
 ```
