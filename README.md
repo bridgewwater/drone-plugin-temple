@@ -45,7 +45,6 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
   - `github.com/bridgewwater/drone-plugin-temple` to your package name
   - `bridgewwater` to your owner name
   - `drone-plugin-temple` to your project name
-  - `go 1.17`, `^1.17`, `1.17.13` to new go version for dev
 
 ### Pipeline Settings (.drone.yml)
 
@@ -109,6 +108,7 @@ $ echo "go mod vendor"
 ## evn
 
 - minimum go version: go 1.17
+- change `go 1.17`, `^1.17`, `1.17.13` to new go version
 
 ```bash
 make init dep
