@@ -1,6 +1,6 @@
 [![golang-ci](https://github.com/bridgewwater/drone-plugin-temple/workflows/golang-ci/badge.svg?branch=main)](https://github.com/bridgewwater/drone-plugin-temple/actions/workflows/golang-ci.yml)
 [![TravisBuildStatus](https://api.travis-ci.com/bridgewwater/drone-plugin-temple.svg?branch=main)](https://travis-ci.com/bridgewwater/drone-plugin-temple)
-[![license](https://img.shields.io/github/license/bridgewwater/drone-plugin-temple)](https://github.com/bridgewwater/drone-plugin-temple)
+[![GitHub license](https://img.shields.io/github/license/bridgewwater/drone-plugin-temple)](https://github.com/bridgewwater/drone-plugin-temple)
 [![go mod version](https://img.shields.io/github/go-mod/go-version/bridgewwater/drone-plugin-temple?label=go.mod)](https://github.com/bridgewwater/drone-plugin-temple)
 [![GoDoc](https://godoc.org/github.com/bridgewwater/drone-plugin-temple?status.png)](https://godoc.org/github.com/bridgewwater/drone-plugin-temple/)
 [![GoReportCard](https://goreportcard.com/badge/github.com/bridgewwater/drone-plugin-temple)](https://goreportcard.com/report/github.com/bridgewwater/drone-plugin-temple)
@@ -8,7 +8,7 @@
 [![docker version semver](https://img.shields.io/docker/v/bridgewwater/drone-plugin-temple?sort=semver)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple/tags?page=1&ordering=last_updated)
 [![docker image size](https://img.shields.io/docker/image-size/bridgewwater/drone-plugin-temple)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple)
 [![docker pulls](https://img.shields.io/docker/pulls/bridgewwater/drone-plugin-temple)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple/tags?page=1&ordering=last_updated)
-[![github release](https://img.shields.io/github/v/release/bridgewwater/drone-plugin-temple?style=social)](https://github.com/bridgewwater/drone-plugin-temple/releases)
+[![GitHub release](https://img.shields.io/github/v/release/bridgewwater/drone-plugin-temple?style=social)](https://github.com/bridgewwater/drone-plugin-temple/releases)
 
 ### cli tools to init project fast
 
@@ -33,7 +33,7 @@ We welcome community contributions to this project.
 
 Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for more information on how to get started.
 
-## Features
+请阅读有关 [贡献者指南](.github/CONTRIBUTING_DOC/zh-CN/CONTRIBUTING.md) 以获取更多如何入门的信息## Features
 
 - [ ] more perfect test case coverage
 - [ ] more perfect benchmark case
@@ -107,8 +107,8 @@ $ echo "go mod vendor"
 
 ## evn
 
-- minimum go version: go 1.17
-- change `go 1.17`, `^1.17`, `1.17.13` to new go version
+- minimum go version: go 1.18
+- change `go 1.18`, `^1.18`, `1.18.10` to new go version
 
 ```bash
 make init dep
