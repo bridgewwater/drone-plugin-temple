@@ -56,10 +56,11 @@ func main() {
 	app.Name = name
 	app.Usage = pkgJson.GetPackageJsonDescription()
 	year := time.Now().Year()
-	app.Copyright = fmt.Sprintf("© 2022-%d sinlov", year)
+	jsonAuthor := pkgJson.GetPackageJsonAuthor()
+	app.Copyright = fmt.Sprintf("© 2022-%d %s", year, jsonAuthor.Name)
 	author := &cli.Author{
-		Name:  "sinlov",
-		Email: "sinlovgmppt@gmail.com",
+		Name:  jsonAuthor.Name,
+		Email: jsonAuthor.Email,
 	}
 	app.Authors = []*cli.Author{
 		author,
