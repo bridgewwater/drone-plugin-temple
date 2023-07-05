@@ -42,9 +42,9 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 ## usage
 
 - use this template, replace list below
-  - `github.com/bridgewwater/drone-plugin-temple` to your package name
-  - `bridgewwater` to your owner name
-  - `drone-plugin-temple` to your project name
+    - `github.com/bridgewwater/drone-plugin-temple` to your package name
+    - `bridgewwater` to your owner name
+    - `drone-plugin-temple` to your project name
 
 ### Pipeline Settings (.drone.yml)
 
@@ -73,6 +73,20 @@ steps:
         - failure
         # - success
 ```
+
+## env
+
+- minimum go version: go 1.18
+- change `go 1.18`, `^1.18`, `1.18.10` to new go version
+
+### libs
+
+| lib                                        | version |
+|:-------------------------------------------|:--------|
+| https://github.com/stretchr/testify        | v1.8.4  |
+| https://github.com/joho/godotenv           | v1.4.0  |
+| https://github.com/sinlov/drone-info-tools | v1.21.0 |
+| https://github.com/urfave/cli/v2           | v2.25.7 |
 
 # dev
 
@@ -104,11 +118,6 @@ $ go list -mod=readonly -v -m -versions github.com/bridgewwater/drone-plugin-tem
 $ echo "go mod edit -require=$(go list -mod=readonly -m -versions github.com/bridgewwater/drone-plugin-temple | awk '{print $1 "@" $NF}')"
 $ echo "go mod vendor"
 ```
-
-## evn
-
-- minimum go version: go 1.18
-- change `go 1.18`, `^1.18`, `1.18.10` to new go version
 
 ```bash
 make init dep
