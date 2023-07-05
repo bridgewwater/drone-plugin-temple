@@ -35,6 +35,8 @@ Please read [Contributor Guide](.github/CONTRIBUTING_DOC/CONTRIBUTING.md) for mo
 
 请阅读有关 [贡献者指南](.github/CONTRIBUTING_DOC/zh-CN/CONTRIBUTING.md) 以获取更多如何入门的信息## Features
 
+## Features
+
 - [ ] more perfect test case coverage
 - [ ] more perfect benchmark case
 - more see [features/README.md](features/README.md)
@@ -73,6 +75,17 @@ steps:
         - failure
         # - success
 ```
+
+### install cli tools
+
+```bash
+# install at ${GOPATH}/bin
+$ go install -v github.com/bridgewwater/drone-plugin-temple/cmd/drone-plugin-temple@latest
+# install version v1.0.0
+$ go install -v github.com/bridgewwater/drone-plugin-temple/cmd/drone-plugin-temple@v1.0.0
+```
+
+or download by [github releases](https://github.com/bridgewwater/drone-plugin-temple/releases)
 
 ## env
 

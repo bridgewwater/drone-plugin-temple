@@ -5,6 +5,7 @@ package main
 import (
 	_ "embed"
 	"fmt"
+	"github.com/bridgewwater/drone-plugin-temple"
 	"github.com/sinlov/drone-info-tools/pkgJson"
 	"github.com/sinlov/drone-info-tools/template"
 	"log"
@@ -17,13 +18,6 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/urfave/cli/v2"
 )
-
-const (
-	Name = "drone-plugin-temple"
-)
-
-//go:embed package.json
-var packageJson string
 
 // action
 // do cli Action before flag.
@@ -39,7 +33,7 @@ func action(c *cli.Context) error {
 		log.Printf("debug: load droneInfo finish at link: %v\n", drone.Build.Link)
 	}
 
-	p := plugin.BindCliFlag(c, cliVersion, Name, drone)
+	p := plugin.BindCliFlag(c, cliVersion, pkgJson.GetPackageJsonName(), drone)
 	err := p.Exec()
 
 	if err != nil {
@@ -51,12 +45,16 @@ func action(c *cli.Context) error {
 }
 
 func main() {
-	pkgJson.InitPkgJsonContent(packageJson)
+	pkgJson.InitPkgJsonContent(drone_plugin_temple.PackageJson)
 	template.RegisterSettings(template.DefaultFunctions)
+	name := pkgJson.GetPackageJsonName()
+	if name == "" {
+		panic("package.json name is empty")
+	}
 	app := cli.NewApp()
 	app.Version = pkgJson.GetPackageJsonVersionGoStyle()
-	app.Name = "Drone Plugin"
-	app.Usage = ""
+	app.Name = name
+	app.Usage = pkgJson.GetPackageJsonDescription()
 	year := time.Now().Year()
 	app.Copyright = fmt.Sprintf("© 2022-%d sinlov", year)
 	author := &cli.Author{
