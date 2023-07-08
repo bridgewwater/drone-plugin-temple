@@ -97,6 +97,7 @@ or download by [github releases](https://github.com/bridgewwater/drone-plugin-te
 | lib                                        | version |
 |:-------------------------------------------|:--------|
 | https://github.com/stretchr/testify        | v1.8.4  |
+| https://github.com/sebdah/goldie           | v2.5.3  |
 | https://github.com/joho/godotenv           | v1.4.0  |
 | https://github.com/sinlov/drone-info-tools | v1.21.0 |
 | https://github.com/urfave/cli/v2           | v2.25.7 |

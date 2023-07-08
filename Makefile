@@ -96,11 +96,13 @@ cleanLog:
 	@$(RM) -r ${ENV_ROOT_LOG_PATH}
 	@echo "~> finish clean path: ${ENV_ROOT_LOG_PATH}"
 
-cleanTestData:
-	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
+cleanTest:
 	@$(RM) coverage.txt
 	@$(RM) coverage.out
 	@$(RM) profile.txt
+
+cleanTestData:
+	$(info -> notes: remove folder [ testdata ] unable to match subdirectories)
 	@$(RM) -r **/testdata
 	@$(RM) -r **/**/testdata
 	@$(RM) -r **/**/**/testdata
@@ -109,7 +111,7 @@ cleanTestData:
 	@$(RM) -r **/**/**/**/**/**/testdata
 	$(info -> finish clean folder [ testdata ])
 
-clean: cleanTestData cleanBuild cleanLog
+clean: cleanTest cleanBuild cleanLog
 	@echo "~> clean finish"
 
 cleanAll: clean cleanAllDist
