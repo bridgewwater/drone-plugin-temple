@@ -24,12 +24,10 @@ var (
 type (
 	// Config plugin private config
 	Config struct {
-		Webhook string
-		Secret  string
-		MsgType string
-
-		Debug bool
-
+		Debug         bool
 		TimeoutSecond uint
+
+		Webhook string
+		MsgType string
 	}
 )

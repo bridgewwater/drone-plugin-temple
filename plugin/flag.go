@@ -12,21 +12,25 @@ import (
 )
 
 const (
-	EnvWebHook = "PLUGIN_WEBHOOK"
-	EnvMsgType = "PLUGIN_MSG_TYPE"
+	NamePluginDebug   = "config.debug"
+	EnvPluginTimeOut  = "PLUGIN_TIMEOUT_SECOND"
+	NamePluginTimeOut = "config.timeout_second"
+
+	EnvWebHook  = "PLUGIN_WEBHOOK"
+	NameWebHook = "config.webhook"
+	EnvMsgType  = "PLUGIN_MSG_TYPE"
+	NameMsgType = "config.msg_type"
 )
 
 // BindCliFlag
 // check args here
 func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Drone) (*Plugin, error) {
 	config := Config{
-		Webhook: c.String("config.webhook"),
-		Secret:  c.String("config.secret"),
-		MsgType: c.String("config.msg_type"),
+		Debug:         c.Bool(NamePluginDebug),
+		TimeoutSecond: c.Uint(NamePluginTimeOut),
 
-		Debug: c.Bool("config.debug"),
-
-		TimeoutSecond: c.Uint("config.timeout_second"),
+		Webhook: c.String(NameWebHook),
+		MsgType: c.String(NameMsgType),
 	}
 
 	drone_log.Debugf("args config.timeout_second: %v", config.TimeoutSecond)
@@ -77,13 +81,12 @@ func Flag() []cli.Flag {
 			EnvVars: []string{"PLUGIN_new_arg"},
 		},
 		&cli.StringFlag{
-			Name:       "config.webhook,webhook",
-			Usage:      "webhook for send api",
-			HasBeenSet: false,
-			EnvVars:    []string{EnvWebHook},
+			Name:    NameWebHook,
+			Usage:   "webhook for send api",
+			EnvVars: []string{EnvWebHook},
 		},
 		&cli.StringFlag{
-			Name:    "config.msg_type,msg_type",
+			Name:    NameMsgType,
 			Usage:   "message type",
 			Value:   "text",
 			EnvVars: []string{EnvMsgType},
@@ -117,14 +120,14 @@ func HideFlag() []cli.Flag {
 func CommonFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.UintFlag{
-			Name:    "config.timeout_second,timeout_second",
+			Name:    NamePluginTimeOut,
 			Usage:   "do request timeout setting second.",
 			Hidden:  true,
 			Value:   10,
-			EnvVars: []string{"PLUGIN_TIMEOUT_SECOND"},
+			EnvVars: []string{EnvPluginTimeOut},
 		},
 		&cli.BoolFlag{
-			Name:    "config.debug,debug",
+			Name:    NamePluginDebug,
 			Usage:   "debug mode",
 			Value:   false,
 			EnvVars: []string{drone_info.EnvKeyPluginDebug},
