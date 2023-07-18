@@ -1,4 +1,4 @@
-[![golang-ci](https://github.com/bridgewwater/drone-plugin-temple/workflows/golang-ci/badge.svg?branch=main)](https://github.com/bridgewwater/drone-plugin-temple/actions/workflows/golang-ci.yml)
+[![ci](https://github.com/bridgewwater/drone-plugin-temple/workflows/ci/badge.svg?branch=main)](https://github.com/bridgewwater/drone-plugin-temple/actions/workflows/ci.yml)
 [![TravisBuildStatus](https://api.travis-ci.com/bridgewwater/drone-plugin-temple.svg?branch=main)](https://travis-ci.com/bridgewwater/drone-plugin-temple)
 [![GitHub license](https://img.shields.io/github/license/bridgewwater/drone-plugin-temple)](https://github.com/bridgewwater/drone-plugin-temple)
 [![go mod version](https://img.shields.io/github/go-mod/go-version/bridgewwater/drone-plugin-temple?label=go.mod)](https://github.com/bridgewwater/drone-plugin-temple)
@@ -137,6 +137,12 @@ $ echo "go mod vendor"
 make init dep
 ```
 
+- see help
+
+```bash
+$ make devHelp
+```
+
 - test code
 
 add env then test
@@ -150,13 +156,7 @@ export PLUGIN_MSG_TYPE=post \
 $ make test testBenchmark
 ```
 
-- see help
-
-```bash
-$ make dev
-```
-
-edit [main.go](main.go) file set env then and run
+- full env example
 
 ```bash
 export PLUGIN_MSG_TYPE= \

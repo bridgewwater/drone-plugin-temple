@@ -1,12 +1,24 @@
 package plugin
 
 import (
+	"fmt"
 	"github.com/sinlov/drone-info-tools/drone_info"
+	"github.com/sinlov/drone-info-tools/drone_log"
+	"github.com/sinlov/drone-info-tools/drone_urfave_cli_v2/exit_cli"
+	tools "github.com/sinlov/drone-info-tools/tools/str_tools"
 	"github.com/urfave/cli/v2"
 	"log"
+	"os"
 )
 
-func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Drone) Plugin {
+const (
+	EnvWebHook = "PLUGIN_WEBHOOK"
+	EnvMsgType = "PLUGIN_MSG_TYPE"
+)
+
+// BindCliFlag
+// check args here
+func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Drone) (*Plugin, error) {
 	config := Config{
 		Webhook: c.String("config.webhook"),
 		Secret:  c.String("config.secret"),
@@ -17,8 +29,31 @@ func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Dr
 		TimeoutSecond: c.Uint("config.timeout_second"),
 	}
 
+	drone_log.Debugf("args config.timeout_second: %v", config.TimeoutSecond)
+
 	if config.Debug {
-		log.Printf("config.timeout_second: %v", config.TimeoutSecond)
+		for _, e := range os.Environ() {
+			log.Println(e)
+		}
+	}
+
+	if config.Webhook == "" {
+		err := fmt.Errorf("missing webhook, please set webhook env: %s", EnvWebHook)
+		drone_log.Error(err)
+		return nil, exit_cli.Err(err)
+	}
+
+	if config.MsgType == "" {
+		return nil, exit_cli.Format("missing webhook, please set message type env: %s", EnvMsgType)
+	}
+
+	if !(tools.StrInArr(config.MsgType, supportMsgType)) {
+		return nil, exit_cli.Format("msg type only support %v", supportMsgType)
+	}
+
+	// set default TimeoutSecond
+	if config.TimeoutSecond == 0 {
+		config.TimeoutSecond = 10
 	}
 
 	p := Plugin{
@@ -27,7 +62,7 @@ func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Dr
 		Drone:   drone,
 		Config:  config,
 	}
-	return p
+	return &p, nil
 }
 
 // Flag
@@ -45,13 +80,13 @@ func Flag() []cli.Flag {
 			Name:       "config.webhook,webhook",
 			Usage:      "webhook for send api",
 			HasBeenSet: false,
-			EnvVars:    []string{"PLUGIN_WEBHOOK"},
+			EnvVars:    []string{EnvWebHook},
 		},
 		&cli.StringFlag{
 			Name:    "config.msg_type,msg_type",
 			Usage:   "message type",
 			Value:   "text",
-			EnvVars: []string{"PLUGIN_MSG_TYPE"},
+			EnvVars: []string{EnvMsgType},
 		},
 		// plugin end
 		//&cli.StringFlag{

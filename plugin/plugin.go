@@ -1,10 +1,9 @@
 package plugin
 
 import (
-	"errors"
 	"fmt"
 	"github.com/sinlov/drone-info-tools/drone_info"
-	tools "github.com/sinlov/drone-info-tools/tools/str_tools"
+	"github.com/sinlov/drone-info-tools/drone_log"
 	"log"
 	"math/rand"
 	"os"
@@ -32,45 +31,9 @@ func (p *Plugin) CleanResultEnv() error {
 }
 
 func (p *Plugin) Exec() error {
-
-	log.Printf("=> %s version %s start", p.Name, p.Version)
-
-	if p.Config.Debug {
-		for _, e := range os.Environ() {
-			log.Println(e)
-		}
-	}
-
-	var err error
-
-	if p.Config.Webhook == "" {
-		msg := "missing webhook, please set webhook"
-		return errors.New(msg)
-	}
-
-	if p.Config.MsgType == "" {
-		msg := "missing msg type setting, please set message type"
-		return errors.New(msg)
-	}
-
-	if !(tools.StrInArr(p.Config.MsgType, supportMsgType)) {
-		return fmt.Errorf("msg type only support %v", supportMsgType)
-	}
-
-	// set default TimeoutSecond
-	if p.Config.TimeoutSecond == 0 {
-		p.Config.TimeoutSecond = 10
-	}
-
-	log.Printf("dev use Webhook: %v\n", p.Config.Webhook)
-	log.Printf("dev use MsgType: %v\n", p.Config.MsgType)
-
-	log.Printf("=> %s version %s end", p.Name, p.Version)
-
-	if p.Config.Debug {
-		log.Printf("=> debug: %s version %s", p.Name, p.Version)
-	}
-	return err
+	drone_log.Infof("use Webhook: %v\n", p.Config.Webhook)
+	drone_log.Infof("use MsgType: %v\n", p.Config.MsgType)
+	return nil
 }
 
 // randomStr
