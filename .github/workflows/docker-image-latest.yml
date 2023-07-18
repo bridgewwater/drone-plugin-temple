@@ -40,35 +40,29 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
-        if: ${{ github.ref == format('refs/heads/{0}', '${{ inputs.build_branch_name }}') }}
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
-        if: ${{ github.ref == format('refs/heads/{0}', '${{ inputs.build_branch_name }}') }}
         with:
-          images: ${{ inputs.docker_hub_user }}/${{ inputs.docker_image_name }}
+          images: ${{ inputs.docker_image_name }}
           tags: |
             # set latest tag for main branch https://github.com/docker/metadata-action#latest-tag
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+            type=raw,value=latest,enable=true
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-        if: ${{ github.ref == format('refs/heads/{0}', '${{ inputs.build_branch_name }}') }}
       -
         name: "Login into registry as user: inputs.docker_hub_user"
         uses: docker/login-action@v2
-        if: ${{ github.ref == format('refs/heads/{0}', '${{ inputs.build_branch_name }}') }}
         with:
           username: ${{ inputs.docker_hub_user }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-        if: ${{ github.ref == format('refs/heads/{0}', '${{ inputs.build_branch_name }}') }}
       -
         name: Build dry
         uses: docker/build-push-action@v4 # https://github.com/docker/build-push-action
-        if: ${{ github.ref == format('refs/heads/{0}', '${{ inputs.build_branch_name }}') }}
         with:
           context: .
           file: Dockerfile
@@ -92,10 +86,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ inputs.docker_hub_user }}/${{ inputs.docker_image_name }}
+          images: ${{ inputs.docker_image_name }}
           tags: |
             # type semver https://github.com/docker/metadata-action#typesemver
-            type=semver,pattern={{version}}
+            type=raw,value=latest,enable=true
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2

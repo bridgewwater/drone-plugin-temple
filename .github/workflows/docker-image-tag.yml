@@ -38,7 +38,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ inputs.docker_hub_user }}/${{ inputs.docker_image_name }}
+          images: ${{ inputs.docker_image_name }}
           tags: |
             # type semver https://github.com/docker/metadata-action#typesemver
             type=semver,pattern={{version}}
@@ -80,7 +80,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ inputs.docker_hub_user }}/${{ inputs.docker_image_name }}
+          images: ${{ inputs.docker_image_name }}
           tags: |
             # type semver https://github.com/docker/metadata-action#typesemver
             type=semver,pattern={{version}}
