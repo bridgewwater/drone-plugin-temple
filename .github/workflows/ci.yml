@@ -11,6 +11,10 @@ on:
   pull_request:
     paths-ignore:
       - '**/README.md'
+    types: # https://docs.github.com/actions/using-workflows/events-that-trigger-workflows#pull_request
+      - opened
+      - reopened
+      - closed
     branches:
       - main
 
