@@ -3,7 +3,7 @@ module github.com/bridgewwater/drone-plugin-temple
 go 1.18
 
 require (
-	github.com/joho/godotenv v1.4.0
+	github.com/joho/godotenv v1.5.1
 	github.com/sebdah/goldie/v2 v2.5.3
 	github.com/sinlov/drone-info-tools v1.23.0
 	github.com/stretchr/testify v1.8.4
