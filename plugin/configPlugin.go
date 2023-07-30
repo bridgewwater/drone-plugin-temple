@@ -6,6 +6,15 @@ const (
 	msgTypeText        = "text"
 	msgTypePost        = "post"
 	msgTypeInteractive = "interactive"
+
+	NamePluginDebug   = "config.debug"
+	EnvPluginTimeOut  = "PLUGIN_TIMEOUT_SECOND"
+	NamePluginTimeOut = "config.timeout_second"
+
+	EnvWebHook  = "PLUGIN_WEBHOOK"
+	NameWebHook = "config.webhook"
+	EnvMsgType  = "PLUGIN_MSG_TYPE"
+	NameMsgType = "config.msg_type"
 )
 
 var (

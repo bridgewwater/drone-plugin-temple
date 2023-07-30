@@ -11,17 +11,6 @@ import (
 	"os"
 )
 
-const (
-	NamePluginDebug   = "config.debug"
-	EnvPluginTimeOut  = "PLUGIN_TIMEOUT_SECOND"
-	NamePluginTimeOut = "config.timeout_second"
-
-	EnvWebHook  = "PLUGIN_WEBHOOK"
-	NameWebHook = "config.webhook"
-	EnvMsgType  = "PLUGIN_MSG_TYPE"
-	NameMsgType = "config.msg_type"
-)
-
 // BindCliFlag
 // check args here
 func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Drone) (*Plugin, error) {
