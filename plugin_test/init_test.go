@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sinlov/drone-info-tools/drone_info"
+	"github.com/sinlov/drone-info-tools/drone_log"
 	"github.com/sinlov/drone-info-tools/template"
 	"io/fs"
 	"math/rand"
@@ -36,6 +37,15 @@ var (
 )
 
 func envCheck(t *testing.T) bool {
+	drone_log.ShowLogLineNo(true)
+
+	// most CI system will set env CI to true
+	envCI := fetchOsEnvBool("CI", false)
+	if !envCI {
+		t.Logf("not in CI system, skip envCheck")
+		return false
+	}
+	t.Logf("check env for CI system")
 	mustSetEnvList := []string{
 		keyPluginWebhook,
 	}

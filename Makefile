@@ -130,6 +130,7 @@ dep: modVerify modDownload modTidy modVendor
 
 style: modTidy modVerify modFmt modLintRun
 
+ci: export CI=true
 ci: modTidy modVerify modFmt modVet modLintRun test
 
 buildMain:

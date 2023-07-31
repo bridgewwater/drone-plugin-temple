@@ -22,13 +22,14 @@ func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Dr
 		MsgType: c.String(NameMsgType),
 	}
 
-	drone_log.Debugf("args config.timeout_second: %v", config.TimeoutSecond)
-
 	if config.Debug {
+		drone_log.ShowLogLineNo(true)
 		for _, e := range os.Environ() {
 			log.Println(e)
 		}
 	}
+
+	drone_log.Debugf("args config.timeout_second: %v", config.TimeoutSecond)
 
 	if config.Webhook == "" {
 		err := fmt.Errorf("missing webhook, please set webhook env: %s", EnvWebHook)
