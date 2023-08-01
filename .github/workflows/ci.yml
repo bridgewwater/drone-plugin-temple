@@ -47,8 +47,8 @@ jobs:
     needs:
      - version
      - golang-ci
-#    if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || github.base_ref == 'main' }}
-    if: ${{ github.event.pull_request.merged == true }}
+    # if: ${{ github.event.pull_request.merged == true }}
+    if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || ( github.base_ref == 'main' && github.event.pull_request.merged == true ) }}
     uses: ./.github/workflows/go-release-platform.yml
     secrets: inherit
     with:
@@ -60,7 +60,7 @@ jobs:
      - version
      - golang-ci
     uses: ./.github/workflows/docker-image-latest.yml
-    if: ${{ github.event.pull_request.merged == true }}
+    if: ${{ ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || ( github.base_ref == 'main' && github.event.pull_request.merged == true ) }}
     secrets: inherit
     with:
       docker_hub_user: 'bridgewwater'
