@@ -5,7 +5,7 @@ import (
 	"github.com/sinlov/drone-info-tools/drone_info"
 	"github.com/sinlov/drone-info-tools/drone_log"
 	"github.com/sinlov/drone-info-tools/drone_urfave_cli_v2/exit_cli"
-	tools "github.com/sinlov/drone-info-tools/tools/str_tools"
+	droneStrTools "github.com/sinlov/drone-info-tools/tools/str_tools"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -41,7 +41,7 @@ func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Dr
 		return nil, exit_cli.Format("missing webhook, please set message type env: %s", EnvMsgType)
 	}
 
-	if !(tools.StrInArr(config.MsgType, supportMsgType)) {
+	if !(droneStrTools.StrInArr(config.MsgType, supportMsgType)) {
 		return nil, exit_cli.Format("msg type only support %v", supportMsgType)
 	}
 

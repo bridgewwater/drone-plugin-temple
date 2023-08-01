@@ -47,11 +47,15 @@ func TestPlugin(t *testing.T) {
 	if envMsgType == "" {
 		t.Error("please set env:PLUGIN_MSG_TYPE then test")
 	}
-
 	p.Config.MsgType = envMsgType
 
 	p.Drone = *drone_info.MockDroneInfo("success")
+
 	// verify Plugin
+	err = p.Exec()
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	err = p.CleanResultEnv()
 	if err != nil {
