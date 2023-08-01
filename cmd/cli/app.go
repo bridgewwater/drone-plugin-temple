@@ -7,10 +7,14 @@ import (
 	"github.com/sinlov/drone-info-tools/drone_urfave_cli_v2/exit_cli"
 	"github.com/sinlov/drone-info-tools/pkgJson"
 	"github.com/urfave/cli/v2"
+	"runtime"
 	"time"
 )
 
-const defaultExitCode = 1
+const (
+	defaultExitCode    = 1
+	CopyrightStartYear = "2023"
+)
 
 func NewCliApp() *cli.App {
 	name := pkgJson.GetPackageJsonName()
@@ -24,7 +28,8 @@ func NewCliApp() *cli.App {
 	app.Usage = pkgJson.GetPackageJsonDescription()
 	year := time.Now().Year()
 	jsonAuthor := pkgJson.GetPackageJsonAuthor()
-	app.Copyright = fmt.Sprintf("© 2022-%d %s", year, jsonAuthor.Name)
+	app.Copyright = fmt.Sprintf("© %s-%d %s by: %s, run on %s %s",
+		CopyrightStartYear, year, jsonAuthor.Name, runtime.Version(), runtime.GOOS, runtime.GOARCH)
 	author := &cli.Author{
 		Name:  jsonAuthor.Name,
 		Email: jsonAuthor.Email,
