@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/sinlov/drone-info-tools/drone_info"
 	"github.com/sinlov/drone-info-tools/drone_log"
+	"github.com/sinlov/drone-info-tools/drone_urfave_cli_v2/exit_cli"
+	droneStrTools "github.com/sinlov/drone-info-tools/tools/str_tools"
 	"log"
 	"math/rand"
 	"os"
@@ -31,6 +33,21 @@ func (p *Plugin) CleanResultEnv() error {
 }
 
 func (p *Plugin) Exec() error {
+
+	if p.Config.Webhook == "" {
+		err := fmt.Errorf("missing webhook, please set webhook env: %s", EnvWebHook)
+		drone_log.Error(err)
+		return exit_cli.Err(err)
+	}
+
+	if p.Config.MsgType == "" {
+		return exit_cli.Format("missing webhook, please set message type env: %s", EnvMsgType)
+	}
+
+	if !(droneStrTools.StrInArr(p.Config.MsgType, supportMsgType)) {
+		return exit_cli.Format("msg type only support %v", supportMsgType)
+	}
+
 	drone_log.Infof("use Webhook: %v\n", p.Config.Webhook)
 	drone_log.Infof("use MsgType: %v\n", p.Config.MsgType)
 	return nil

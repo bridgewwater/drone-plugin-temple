@@ -21,9 +21,10 @@ func TestPlugin(t *testing.T) {
 		return
 	}
 
-	// use env:ENV_DEBUG
+	// use env:PLUGIN_DEBUG or env:DRONE_BUILD_DEBUG open debug
 	p.Config.Debug = envDebug
 
+	// pass this test set env:PLUGIN_WEBHOOK
 	err := p.Exec()
 	if nil == err {
 		t.Fatal("args [ webhook ] empty error should be catch!")
@@ -31,24 +32,23 @@ func TestPlugin(t *testing.T) {
 
 	p.Config.Webhook = envPluginWebhook
 
+	// pass this test set env:PLUGIN_MSG_TYPE
 	err = p.Exec()
 	if nil == err {
 		t.Fatal("args [ msg_type ] empty error should be catch!")
 	}
-
 	p.Config.MsgType = "mock" // not support type
 	err = p.Exec()
 	if nil == err {
 		t.Fatal("args [ msg_type ] not support error should be catch!")
 	}
-
 	envMsgType := os.Getenv("PLUGIN_MSG_TYPE")
-
 	if envMsgType == "" {
 		t.Error("please set env:PLUGIN_MSG_TYPE then test")
 	}
 	p.Config.MsgType = envMsgType
 
+	// mock  drone info
 	p.Drone = *drone_info.MockDroneInfo("success")
 
 	// verify Plugin

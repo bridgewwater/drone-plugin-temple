@@ -1,21 +1,26 @@
 package plugin
 
 import (
-	"fmt"
 	"github.com/sinlov/drone-info-tools/drone_info"
 	"github.com/sinlov/drone-info-tools/drone_log"
-	"github.com/sinlov/drone-info-tools/drone_urfave_cli_v2/exit_cli"
-	droneStrTools "github.com/sinlov/drone-info-tools/tools/str_tools"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
 )
 
+// IsBuildDebugOpen
+// when config or drone build open debug will open debug
+func IsBuildDebugOpen(c *cli.Context) bool {
+	return c.Bool(NamePluginDebug) || c.Bool(drone_info.NameCliStepsDebug)
+}
+
 // BindCliFlag
 // check args here
 func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Drone) (*Plugin, error) {
+	debug := IsBuildDebugOpen(c)
+
 	config := Config{
-		Debug:         c.Bool(NamePluginDebug),
+		Debug:         debug,
 		TimeoutSecond: c.Uint(NamePluginTimeOut),
 
 		Webhook: c.String(NameWebHook),
@@ -23,32 +28,17 @@ func BindCliFlag(c *cli.Context, cliVersion, cliName string, drone drone_info.Dr
 	}
 
 	if config.Debug {
-		drone_log.ShowLogLineNo(true)
 		for _, e := range os.Environ() {
 			log.Println(e)
 		}
-	}
-
-	drone_log.Debugf("args config.timeout_second: %v", config.TimeoutSecond)
-
-	if config.Webhook == "" {
-		err := fmt.Errorf("missing webhook, please set webhook env: %s", EnvWebHook)
-		drone_log.Error(err)
-		return nil, exit_cli.Err(err)
-	}
-
-	if config.MsgType == "" {
-		return nil, exit_cli.Format("missing webhook, please set message type env: %s", EnvMsgType)
-	}
-
-	if !(droneStrTools.StrInArr(config.MsgType, supportMsgType)) {
-		return nil, exit_cli.Format("msg type only support %v", supportMsgType)
 	}
 
 	// set default TimeoutSecond
 	if config.TimeoutSecond == 0 {
 		config.TimeoutSecond = 10
 	}
+
+	drone_log.Debugf("args %s: %v", NamePluginTimeOut, config.TimeoutSecond)
 
 	p := Plugin{
 		Name:    cliName,

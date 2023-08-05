@@ -14,7 +14,7 @@ var dronePlugin *plugin.Plugin
 // GlobalBeforeAction
 // do command Action before flag global.
 func GlobalBeforeAction(c *cli.Context) error {
-	isDebug := c.Bool("config.debug")
+	isDebug := plugin.IsBuildDebugOpen(c)
 	if isDebug {
 		drone_log.OpenDebug()
 	}

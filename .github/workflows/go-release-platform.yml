@@ -39,6 +39,10 @@ jobs:
             os: ubuntu-latest
             go_os: linux
             go_arch: arm64
+          - build: linux-arm64
+            os: ubuntu-latest
+            go_os: linux
+            go_arch: arm
           - build: macos-amd64
             os: macos-latest
             go_os: darwin

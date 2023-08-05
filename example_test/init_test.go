@@ -1,13 +1,10 @@
-package plugin_test
+package example_test
 
 import (
 	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/sinlov/drone-info-tools/drone_info"
-	"github.com/sinlov/drone-info-tools/drone_log"
-	"github.com/sinlov/drone-info-tools/template"
 	"io/fs"
 	"math/rand"
 	"os"
@@ -20,58 +17,17 @@ import (
 )
 
 const (
-	defTimeoutSecond     = 10
-	defTimeoutFileSecond = 30
-	mockVersion          = "v0.0.0"
-	mockName             = "drone-plugin-temple"
-	keyEnvCiKeys         = "CI_KEYS"
-	keyPluginWebhook     = "PLUGIN_WEBHOOK"
+	keyEnvCiKeys = "CI_KEYS"
 )
 
 var (
-	envDebug = false
-
-	envPluginWebhook = ""
-	envEnvKeys       []string
-	strData          []string
+	envDebug   = false
+	envEnvKeys []string
 )
 
-func envCheck(t *testing.T) bool {
-
-	if envDebug {
-		drone_log.OpenDebug()
-	}
-
-	// most CI system will set env CI to true
-	envCI := fetchOsEnvBool("CI", false)
-	if !envCI {
-		t.Logf("not in CI system, skip envCheck")
-		return false
-	}
-	t.Logf("check env for CI system")
-
-	mustSetEnvList := []string{
-		keyPluginWebhook,
-	}
-	for _, item := range mustSetEnvList {
-		if os.Getenv(item) == "" {
-			t.Logf("plasee set env: %s, than run test\nfull need set env %v", item, mustSetEnvList)
-			return true
-		}
-	}
-
-	return false
-}
-
 func init() {
-	template.RegisterSettings(template.DefaultFunctions)
-	envDebug = fetchOsEnvBool(drone_info.EnvKeyPluginDebug, false) || fetchOsEnvBool(drone_info.EnvDroneBuildDebug, false)
-
-	envPluginWebhook = fetchOsEnvStr(keyPluginWebhook, "")
+	envDebug = fetchOsEnvBool("PLUGIN_DEBUG", false)
 	envEnvKeys = fetchOsEnvArray(keyEnvCiKeys)
-	for i := 0; i < 200; i++ {
-		strData = append(strData, randomStr(300))
-	}
 }
 
 // test case file tools start

@@ -16,7 +16,7 @@ on:
         type: string
 
 env:
-  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/arm64/v8 # change to your platforms for release
+  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64/v8,linux/arm/v7 # change to your platforms for release
 #  DOCKER_IMAGE_PLATFORMS: linux/amd64,linux/386,linux/arm64/v8,linux/arm/v7
 
 jobs:
@@ -27,8 +27,8 @@ jobs:
         docker_image: # change this for build dry-run
           - platform: linux/amd64
           - platform: linux/arm64/v8
-#          - platform: linux/386
-#          - platform: linux/arm/v7
+          - platform: linux/386
+          - platform: linux/arm/v7
     runs-on: ${{ matrix.os }}
     steps:
       -

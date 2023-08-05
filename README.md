@@ -1,14 +1,18 @@
 [![ci](https://github.com/bridgewwater/drone-plugin-temple/workflows/ci/badge.svg?branch=main)](https://github.com/bridgewwater/drone-plugin-temple/actions/workflows/ci.yml)
 [![TravisBuildStatus](https://api.travis-ci.com/bridgewwater/drone-plugin-temple.svg?branch=main)](https://travis-ci.com/bridgewwater/drone-plugin-temple)
-[![GitHub license](https://img.shields.io/github/license/bridgewwater/drone-plugin-temple)](https://github.com/bridgewwater/drone-plugin-temple)
+
 [![go mod version](https://img.shields.io/github/go-mod/go-version/bridgewwater/drone-plugin-temple?label=go.mod)](https://github.com/bridgewwater/drone-plugin-temple)
-[![GoDoc](https://godoc.org/github.com/bridgewwater/drone-plugin-temple?status.png)](https://godoc.org/github.com/bridgewwater/drone-plugin-temple/)
-[![GoReportCard](https://goreportcard.com/badge/github.com/bridgewwater/drone-plugin-temple)](https://goreportcard.com/report/github.com/bridgewwater/drone-plugin-temple)
+[![GoDoc](https://godoc.org/github.com/bridgewwater/drone-plugin-temple?status.png)](https://godoc.org/github.com/bridgewwater/drone-plugin-temple)
+[![goreportcard](https://goreportcard.com/badge/github.com/bridgewwater/drone-plugin-temple)](https://goreportcard.com/report/github.com/bridgewwater/drone-plugin-temple)
+
+[![docker hub version semver](https://img.shields.io/docker/v/bridgewwater/drone-plugin-temple?sort=semver)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple/tags?page=1&ordering=last_updated)
+[![docker hub image size](https://img.shields.io/docker/image-size/bridgewwater/drone-plugin-temple)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple)
+[![docker hub image pulls](https://img.shields.io/docker/pulls/bridgewwater/drone-plugin-temple)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple/tags?page=1&ordering=last_updated)
+
+[![GitHub license](https://img.shields.io/github/license/bridgewwater/drone-plugin-temple)](https://github.com/bridgewwater/drone-plugin-temple)
 [![codecov](https://codecov.io/gh/bridgewwater/drone-plugin-temple/branch/main/graph/badge.svg)](https://codecov.io/gh/bridgewwater/drone-plugin-temple)
-[![docker version semver](https://img.shields.io/docker/v/bridgewwater/drone-plugin-temple?sort=semver)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple/tags?page=1&ordering=last_updated)
-[![docker image size](https://img.shields.io/docker/image-size/bridgewwater/drone-plugin-temple)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple)
-[![docker pulls](https://img.shields.io/docker/pulls/bridgewwater/drone-plugin-temple)](https://hub.docker.com/r/bridgewwater/drone-plugin-temple/tags?page=1&ordering=last_updated)
-[![GitHub release](https://img.shields.io/github/v/release/bridgewwater/drone-plugin-temple?style=social)](https://github.com/bridgewwater/drone-plugin-temple/releases)
+[![GitHub latest SemVer tag)](https://img.shields.io/github/v/tag/bridgewwater/drone-plugin-temple)](https://github.com/bridgewwater/drone-plugin-temple/tags)
+[![GitHub release)](https://img.shields.io/github/v/release/bridgewwater/drone-plugin-temple)](https://github.com/bridgewwater/drone-plugin-temple/releases)
 
 ### cli tools to init project fast
 
@@ -98,9 +102,8 @@ or download by [github releases](https://github.com/bridgewwater/drone-plugin-te
 |:-------------------------------------------|:--------|
 | https://github.com/stretchr/testify        | v1.8.4  |
 | https://github.com/sebdah/goldie           | v2.5.3  |
-| https://github.com/joho/godotenv           | v1.4.0  |
-| https://github.com/sinlov/drone-info-tools | v1.21.0 |
-| https://github.com/urfave/cli/v2           | v2.25.7 |
+
+- more see [go.mod](go.mod)
 
 # dev
 
