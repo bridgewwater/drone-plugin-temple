@@ -94,7 +94,7 @@ or download by [github releases](https://github.com/bridgewwater/drone-plugin-te
 ## env
 
 - minimum go version: go 1.18
-- change `go 1.18`, `^1.18`, `1.18.10` to new go version
+- change `go 1.18`, `^1.18`, `1.18.10-buster`, `1.18.10` to new go version
 
 ### libs
 
