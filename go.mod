@@ -7,7 +7,7 @@ require (
 	github.com/sebdah/goldie/v2 v2.5.3
 	github.com/sinlov/drone-info-tools v1.32.0
 	github.com/stretchr/testify v1.8.4
-	github.com/urfave/cli/v2 v2.25.7
+	github.com/urfave/cli/v2 v2.26.0
 )
 
 require (
