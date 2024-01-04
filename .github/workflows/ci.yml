@@ -65,8 +65,9 @@ jobs:
       docker_hub_user: 'bridgewwater'
       docker_image_name: 'bridgewwater/drone-plugin-temple'
       build_branch_name: 'main'
-      push_remote_flag: ${{ github.event.pull_request.merged == true }}
+      # push_remote_flag: ${{ github.event.pull_request.merged == true }}
       # push_remote_flag: ${{ github.ref == 'refs/heads/main' }}
+      push_remote_flag: false
 
   docker-image-tag:
     name: docker-image-tag
