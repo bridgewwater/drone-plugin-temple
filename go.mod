@@ -7,7 +7,7 @@ require (
 	github.com/sebdah/goldie/v2 v2.7.1
 	github.com/sinlov/drone-info-tools v1.32.0
 	github.com/stretchr/testify v1.10.0
-	github.com/urfave/cli/v2 v2.27.6
+	github.com/urfave/cli/v2 v2.27.7
 )
 
 require (
@@ -15,7 +15,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.0 // indirect
 	github.com/Masterminds/sprig/v3 v3.2.3 // indirect
 	github.com/aymerick/raymond v2.0.2+incompatible // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/gookit/color v1.5.4 // indirect
