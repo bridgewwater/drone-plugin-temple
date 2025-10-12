@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/joho/godotenv v1.5.1
-	github.com/sebdah/goldie/v2 v2.7.1
+	github.com/sebdah/goldie/v2 v2.8.0
 	github.com/sinlov/drone-info-tools v1.32.0
 	github.com/stretchr/testify v1.11.1
 	github.com/urfave/cli/v2 v2.27.7
